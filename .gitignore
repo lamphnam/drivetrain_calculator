@@ -34,3 +34,9 @@ build/
 
 ### Spring application ###
 /src/main/resources/application.yml
+
+### Claude AI ###
+.claude/
+
+### Any other files or directories you want to ignore ###
+agent_context/

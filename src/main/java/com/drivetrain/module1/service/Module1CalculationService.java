@@ -11,8 +11,10 @@ import com.drivetrain.domain.repository.DesignCaseRepository;
 import com.drivetrain.domain.repository.DesignConstantSetRepository;
 import com.drivetrain.domain.repository.Module1ResultRepository;
 import com.drivetrain.domain.repository.MotorRepository;
+import com.drivetrain.module1.dto.Module1CalculationHistoryItemResponse;
 import com.drivetrain.module1.dto.Module1CalculationRequest;
 import com.drivetrain.module1.dto.Module1CalculationResponse;
+import com.drivetrain.module1.exception.DesignCaseNotFoundException;
 import com.drivetrain.module1.exception.InvalidModule1InputException;
 import com.drivetrain.module1.exception.MissingConstantSetException;
 import com.drivetrain.module1.exception.NoSuitableMotorFoundException;
@@ -36,6 +38,7 @@ public class Module1CalculationService {
     private static final int SCALE = 6;
     private static final BigDecimal TORQUE_CONSTANT = new BigDecimal("9550000");
     private static final BigDecimal DEFAULT_BEVEL_GEAR_RATIO_U2 = new BigDecimal("3.14");
+    private static final String MODULE_LABEL = "Module 1";
 
     private final DesignCaseRepository designCaseRepository;
     private final DesignConstantSetRepository designConstantSetRepository;
@@ -64,6 +67,7 @@ public class Module1CalculationService {
         // Temporary placeholder until Module 3 provides the real bevel-gear ratio split.
         BigDecimal bevelGearRatioU2 = scale(DEFAULT_BEVEL_GEAR_RATIO_U2);
         BigDecimal spurGearRatioU3 = scale(divide(gearboxTransmissionRatioUh, bevelGearRatioU2));
+        List<String> calculationNotes = buildCalculationNotes(constantSet);
 
         replaceExistingModule1Result(designCase);
 
@@ -78,6 +82,7 @@ public class Module1CalculationService {
                 .gearboxTransmissionRatioUh(gearboxTransmissionRatioUh)
                 .bevelGearRatioU2(bevelGearRatioU2)
                 .spurGearRatioU3(spurGearRatioU3)
+                .calculationNote(serializeNotes(calculationNotes))
                 .build();
 
         buildShaftStates(selectedMotor, constantSet, beltRatioU1, bevelGearRatioU2, spurGearRatioU3)
@@ -88,7 +93,22 @@ public class Module1CalculationService {
         designCase.setStatus(DesignCaseStatus.MODULE1_COMPLETED);
         designCaseRepository.save(designCase);
 
-        return mapToResponse(savedResult);
+        return mapToResponse(savedResult, motorRepository.countByIsActiveTrue());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Module1CalculationHistoryItemResponse> getHistory() {
+        return module1ResultRepository.findAllByOrderByUpdatedAtDesc().stream()
+                .map(this::mapToHistoryItem)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Module1CalculationResponse getCalculation(Long designCaseId) {
+        Module1Result module1Result = module1ResultRepository.findDetailedByDesignCaseId(designCaseId)
+                .orElseThrow(() -> new DesignCaseNotFoundException(designCaseId));
+
+        return mapToResponse(module1Result, motorRepository.countByIsActiveTrue());
     }
 
     private DesignConstantSet resolveConstantSet(Long constantSetId) {
@@ -271,16 +291,70 @@ public class Module1CalculationService {
                 });
     }
 
-    private Module1CalculationResponse mapToResponse(Module1Result module1Result) {
-        Module1CalculationResponse.MotorResponse motorResponse = new Module1CalculationResponse.MotorResponse(
-                module1Result.getSelectedMotor().getId(),
-                module1Result.getSelectedMotor().getMotorCode(),
-                module1Result.getSelectedMotor().getRatedPowerKw(),
-                module1Result.getSelectedMotor().getRatedRpm()
+    private Module1CalculationHistoryItemResponse mapToHistoryItem(Module1Result module1Result) {
+        DesignCase designCase = module1Result.getDesignCase();
+        Motor selectedMotor = module1Result.getSelectedMotor();
+
+        return new Module1CalculationHistoryItemResponse(
+                designCase.getId(),
+                module1Result.getId(),
+                MODULE_LABEL,
+                designCase.getCaseCode(),
+                designCase.getCaseName(),
+                designCase.getRequiredPowerKw(),
+                designCase.getRequiredOutputRpm(),
+                selectedMotor.getMotorCode(),
+                resolveMotorDisplayName(selectedMotor),
+                module1Result.getCreatedAt(),
+                module1Result.getUpdatedAt()
+        );
+    }
+
+    private Module1CalculationResponse mapToResponse(Module1Result module1Result, long availableMotorsCount) {
+        DesignCase designCase = module1Result.getDesignCase();
+        DesignConstantSet constantSet = designCase.getConstantSet();
+        Motor selectedMotor = module1Result.getSelectedMotor();
+
+        Module1CalculationResponse.ResultInfo resultInfo = new Module1CalculationResponse.ResultInfo(
+                module1Result.getId(),
+                module1Result.getCreatedAt(),
+                module1Result.getUpdatedAt()
         );
 
-        Module1CalculationResponse.TransmissionRatiosResponse transmissionRatiosResponse =
-                new Module1CalculationResponse.TransmissionRatiosResponse(
+        Module1CalculationResponse.CaseInfo caseInfo = new Module1CalculationResponse.CaseInfo(
+                designCase.getId(),
+                designCase.getCaseCode(),
+                designCase.getCaseName(),
+                designCase.getStatus().name()
+        );
+
+        Module1CalculationResponse.InputSummary inputSummary = new Module1CalculationResponse.InputSummary(
+                designCase.getRequiredPowerKw(),
+                designCase.getRequiredOutputRpm()
+        );
+
+        Module1CalculationResponse.ReferenceSummary referenceSummary = new Module1CalculationResponse.ReferenceSummary(
+                constantSet.getId(),
+                constantSet.getSetCode(),
+                constantSet.getSetName(),
+                availableMotorsCount,
+                constantSet.getDefaultBeltRatioU1(),
+                constantSet.getDefaultGearboxRatioUh()
+        );
+
+        Module1CalculationResponse.SelectedMotorSummary selectedMotorSummary =
+                new Module1CalculationResponse.SelectedMotorSummary(
+                        selectedMotor.getId(),
+                        selectedMotor.getMotorCode(),
+                        resolveMotorDisplayName(selectedMotor),
+                        normalizeText(selectedMotor.getManufacturer()),
+                        normalizeText(selectedMotor.getDescription()),
+                        selectedMotor.getRatedPowerKw(),
+                        selectedMotor.getRatedRpm()
+                );
+
+        Module1CalculationResponse.TransmissionRatiosSummary transmissionRatios =
+                new Module1CalculationResponse.TransmissionRatiosSummary(
                         module1Result.getTotalTransmissionRatioU(),
                         module1Result.getBeltRatioU1(),
                         module1Result.getGearboxTransmissionRatioUh(),
@@ -288,10 +362,11 @@ public class Module1CalculationService {
                         module1Result.getSpurGearRatioU3()
                 );
 
-        List<Module1CalculationResponse.ShaftResponse> shafts = module1Result.getShaftStates().stream()
+        List<Module1CalculationResponse.ShaftStateSummary> shaftStates = module1Result.getShaftStates().stream()
                 .sorted(Comparator.comparingInt(ShaftState::getSequenceNo))
-                .map(shaftState -> new Module1CalculationResponse.ShaftResponse(
+                .map(shaftState -> new Module1CalculationResponse.ShaftStateSummary(
                         shaftState.getShaftCode(),
+                        resolveShaftLabel(shaftState.getShaftCode()),
                         shaftState.getSequenceNo(),
                         shaftState.getPowerKw(),
                         shaftState.getRpm(),
@@ -300,13 +375,57 @@ public class Module1CalculationService {
                 .toList();
 
         return new Module1CalculationResponse(
+                resultInfo,
+                caseInfo,
+                inputSummary,
+                referenceSummary,
+                selectedMotorSummary,
                 module1Result.getTotalEfficiency(),
                 module1Result.getRequiredMotorPowerKw(),
                 module1Result.getPreliminaryMotorRpmNsb(),
-                motorResponse,
-                transmissionRatiosResponse,
-                shafts
+                transmissionRatios,
+                shaftStates,
+                deserializeNotes(module1Result.getCalculationNote())
         );
+    }
+
+    private List<String> buildCalculationNotes(DesignConstantSet constantSet) {
+        return List.of(
+                "Constant set " + constantSet.getSetCode() + " was used for this Module 1 calculation.",
+                "Motor selection only considers active motors with rated power greater than or equal to the required motor power, then picks the rpm closest to the preliminary motor rpm.",
+                "Shaft power propagation applies etaOl across three transitions so the shaft states remain consistent with etaKn * etaD * etaBrc * etaBrt * etaOl^3.",
+                "Bevel gear ratio U2 = 3.14 is a temporary placeholder until Module 3 provides the real gearbox split."
+        );
+    }
+
+    private String serializeNotes(List<String> calculationNotes) {
+        return String.join(System.lineSeparator(), calculationNotes);
+    }
+
+    private List<String> deserializeNotes(String calculationNote) {
+        if (calculationNote == null || calculationNote.isBlank()) {
+            return List.of();
+        }
+
+        return calculationNote.lines()
+                .map(String::trim)
+                .filter(line -> !line.isBlank())
+                .toList();
+    }
+
+    private String resolveMotorDisplayName(Motor motor) {
+        String description = normalizeText(motor.getDescription());
+        return description != null ? description : motor.getMotorCode();
+    }
+
+    private String resolveShaftLabel(ShaftCode shaftCode) {
+        return switch (shaftCode) {
+            case MOTOR -> "Motor Shaft";
+            case SHAFT_1 -> "Shaft 1";
+            case SHAFT_2 -> "Shaft 2";
+            case SHAFT_3 -> "Shaft 3";
+            case DRUM_SHAFT -> "Output Drum Shaft";
+        };
     }
 
     private BigDecimal requirePositive(BigDecimal value, String fieldName) {

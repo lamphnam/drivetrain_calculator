@@ -12,6 +12,8 @@ public interface MotorRepository extends JpaRepository<Motor, Long> {
 
     List<Motor> findByIsActiveTrue();
 
+    long countByIsActiveTrue();
+
     boolean existsByMotorCode(String motorCode);
 
     List<Motor> findByIsActiveTrueAndRatedPowerKwGreaterThanEqualOrderByRatedRpmAsc(BigDecimal ratedPowerKw);

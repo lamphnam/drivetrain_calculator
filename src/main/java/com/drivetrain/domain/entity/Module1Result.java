@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,6 +65,9 @@ public class Module1Result {
     @Column(name = "spur_gear_ratio_u3", precision = 19, scale = 6)
     private BigDecimal spurGearRatioU3;
 
+    @Column(name = "calculation_note", length = 2000)
+    private String calculationNote;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -82,6 +86,7 @@ public class Module1Result {
 
     @Builder.Default
     @OneToMany(mappedBy = "module1Result", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OrderBy("sequenceNo ASC")
     private List<ShaftState> shaftStates = new ArrayList<>();
 
     public void addShaftState(ShaftState shaftState) {
