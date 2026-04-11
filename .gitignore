@@ -33,9 +33,4 @@ build/
 .vscode/
 
 ### Spring application ###
-.application.properties
-.application.yml
-.application.yaml
-.application-*.properties
-.application-*.yml
-.application-*.yaml
+/src/main/resources/application.yml
