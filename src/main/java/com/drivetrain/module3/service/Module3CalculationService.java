@@ -12,6 +12,7 @@ import com.drivetrain.domain.repository.DesignCaseRepository;
 import com.drivetrain.domain.repository.GearMaterialRepository;
 import com.drivetrain.domain.repository.Module1ResultRepository;
 import com.drivetrain.domain.repository.Module3ResultRepository;
+import com.drivetrain.domain.repository.Module4ResultRepository;
 import com.drivetrain.module3.dto.GearMaterialReferenceResponse;
 import com.drivetrain.module3.dto.Module3CalculationRequest;
 import com.drivetrain.module3.dto.Module3CalculationResponse;
@@ -41,6 +42,7 @@ public class Module3CalculationService {
     private final Module1ResultRepository module1ResultRepository;
     private final GearMaterialRepository gearMaterialRepository;
     private final Module3ResultRepository module3ResultRepository;
+    private final Module4ResultRepository module4ResultRepository;
 
     @Transactional
     public Module3CalculationResponse calculate(Module3CalculationRequest request) {
@@ -58,6 +60,7 @@ public class Module3CalculationService {
         Module3EngineeringCalculator.CalculationResult calculated = calculateGeometry(inputs, material);
         List<String> calculationNotes = buildCalculationNotes(inputs, material, calculated);
 
+        replaceExistingModule4Result(designCase);
         replaceExistingModule3Result(designCase);
 
         Module3Result module3Result = Module3Result.builder()
@@ -207,6 +210,15 @@ public class Module3CalculationService {
                     designCase.setModule3Result(null);
                     module3ResultRepository.delete(existingResult);
                     module3ResultRepository.flush();
+                });
+    }
+
+    private void replaceExistingModule4Result(DesignCase designCase) {
+        module4ResultRepository.findByDesignCaseId(designCase.getId())
+                .ifPresent(existingResult -> {
+                    designCase.setModule4Result(null);
+                    module4ResultRepository.delete(existingResult);
+                    module4ResultRepository.flush();
                 });
     }
 

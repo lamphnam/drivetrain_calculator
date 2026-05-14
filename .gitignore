@@ -41,3 +41,6 @@ CLAUDE.md
 
 ### Any other files or directories you want to ignore ###
 agent_context/
+
+postman/
+database/

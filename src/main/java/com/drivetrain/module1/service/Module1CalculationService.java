@@ -11,6 +11,7 @@ import com.drivetrain.domain.repository.DesignCaseRepository;
 import com.drivetrain.domain.repository.DesignConstantSetRepository;
 import com.drivetrain.domain.repository.Module1ResultRepository;
 import com.drivetrain.domain.repository.Module3ResultRepository;
+import com.drivetrain.domain.repository.Module4ResultRepository;
 import com.drivetrain.domain.repository.MotorRepository;
 import com.drivetrain.module1.dto.Module1CalculationHistoryItemResponse;
 import com.drivetrain.module1.dto.Module1ReferenceValuesResponse;
@@ -47,6 +48,7 @@ public class Module1CalculationService {
     private final MotorRepository motorRepository;
     private final Module1ResultRepository module1ResultRepository;
     private final Module3ResultRepository module3ResultRepository;
+    private final Module4ResultRepository module4ResultRepository;
 
     @Transactional
     public Module1CalculationResponse calculate(Module1CalculationRequest request) {
@@ -73,6 +75,7 @@ public class Module1CalculationService {
         List<String> calculationNotes = buildCalculationNotes(constantSet);
 
         replaceExistingModule1Result(designCase);
+        replaceExistingModule4Result(designCase);
         replaceExistingModule3Result(designCase);
 
         Module1Result module1Result = Module1Result.builder()
@@ -315,6 +318,15 @@ public class Module1CalculationService {
                     designCase.setModule3Result(null);
                     module3ResultRepository.delete(existingResult);
                     module3ResultRepository.flush();
+                });
+    }
+
+    private void replaceExistingModule4Result(DesignCase designCase) {
+        module4ResultRepository.findByDesignCaseId(designCase.getId())
+                .ifPresent(existingResult -> {
+                    designCase.setModule4Result(null);
+                    module4ResultRepository.delete(existingResult);
+                    module4ResultRepository.flush();
                 });
     }
 

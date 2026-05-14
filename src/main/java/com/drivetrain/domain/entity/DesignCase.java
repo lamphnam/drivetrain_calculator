@@ -32,7 +32,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"constantSet", "module1Result", "module3Result"})
+@ToString(exclude = {"constantSet", "module1Result", "module3Result", "module4Result"})
 public class DesignCase {
 
     @Id
@@ -76,4 +76,7 @@ public class DesignCase {
 
     @OneToOne(mappedBy = "designCase", fetch = FetchType.LAZY)
     private Module3Result module3Result;
+
+    @OneToOne(mappedBy = "designCase", fetch = FetchType.LAZY)
+    private Module4Result module4Result;
 }
