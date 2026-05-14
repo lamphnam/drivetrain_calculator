@@ -1,8 +1,10 @@
 package com.drivetrain.config;
 
 import com.drivetrain.domain.entity.DesignConstantSet;
+import com.drivetrain.domain.entity.GearMaterial;
 import com.drivetrain.domain.entity.Motor;
 import com.drivetrain.domain.repository.DesignConstantSetRepository;
+import com.drivetrain.domain.repository.GearMaterialRepository;
 import com.drivetrain.domain.repository.MotorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +22,14 @@ public class DataInitializer implements ApplicationRunner {
 
     private final DesignConstantSetRepository constantSetRepository;
     private final MotorRepository motorRepository;
+    private final GearMaterialRepository gearMaterialRepository;
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
         seedConstantSet();
         seedMotors();
+        seedGearMaterials();
     }
 
     private void seedConstantSet() {
@@ -80,5 +84,39 @@ public class DataInitializer implements ApplicationRunner {
 
         motorRepository.save(motor);
         log.info("[Seed] Created Motor: {}", motorCode);
+    }
+
+    private void seedGearMaterials() {
+        seedGearMaterial("C40XH_QT", "Steel C40XH", "Quenched and tempered", 235, 262, 850, 650);
+        seedGearMaterial("40CR_N", "Steel 40Cr", "Normalized", 207, 241, 780, 540);
+        seedGearMaterial("C45_N", "Steel C45", "Normalized", 179, 207, 600, 355);
+    }
+
+    private void seedGearMaterial(
+            String materialCode,
+            String materialName,
+            String heatTreatment,
+            double hbMin,
+            double hbMax,
+            double sigmaBMpa,
+            double sigmaChMpa
+    ) {
+        if (gearMaterialRepository.existsByMaterialCode(materialCode)) {
+            log.debug("[Seed] Gear material '{}' already exists, skipping.", materialCode);
+            return;
+        }
+
+        GearMaterial material = GearMaterial.builder()
+                .materialCode(materialCode)
+                .materialName(materialName)
+                .heatTreatment(heatTreatment)
+                .hbMin(BigDecimal.valueOf(hbMin))
+                .hbMax(BigDecimal.valueOf(hbMax))
+                .sigmaBMpa(BigDecimal.valueOf(sigmaBMpa))
+                .sigmaChMpa(BigDecimal.valueOf(sigmaChMpa))
+                .build();
+
+        gearMaterialRepository.save(material);
+        log.info("[Seed] Created GearMaterial: {}", materialCode);
     }
 }

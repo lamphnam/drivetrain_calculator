@@ -3,6 +3,7 @@ package com.drivetrain.module1.controller;
 import com.drivetrain.module1.dto.Module1CalculationRequest;
 import com.drivetrain.module1.dto.Module1CalculationResponse;
 import com.drivetrain.module1.dto.Module1CalculationHistoryItemResponse;
+import com.drivetrain.module1.dto.Module1ReferenceValuesResponse;
 import com.drivetrain.module1.service.Module1CalculationService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -28,6 +30,13 @@ public class Module1CalculationController {
     @PostMapping("/calculate")
     public Module1CalculationResponse calculateFromInput(@Valid @RequestBody Module1CalculationRequest request) {
         return module1CalculationService.calculate(request);
+    }
+
+    @GetMapping("/reference-values")
+    public Module1ReferenceValuesResponse getReferenceValues(
+            @RequestParam(required = false) @Positive Long constantSetId
+    ) {
+        return module1CalculationService.getReferenceValues(constantSetId);
     }
 
     @GetMapping("/history")

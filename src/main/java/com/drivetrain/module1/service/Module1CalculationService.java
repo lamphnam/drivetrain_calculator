@@ -10,8 +10,10 @@ import com.drivetrain.domain.enums.ShaftCode;
 import com.drivetrain.domain.repository.DesignCaseRepository;
 import com.drivetrain.domain.repository.DesignConstantSetRepository;
 import com.drivetrain.domain.repository.Module1ResultRepository;
+import com.drivetrain.domain.repository.Module3ResultRepository;
 import com.drivetrain.domain.repository.MotorRepository;
 import com.drivetrain.module1.dto.Module1CalculationHistoryItemResponse;
+import com.drivetrain.module1.dto.Module1ReferenceValuesResponse;
 import com.drivetrain.module1.dto.Module1CalculationRequest;
 import com.drivetrain.module1.dto.Module1CalculationResponse;
 import com.drivetrain.module1.exception.DesignCaseNotFoundException;
@@ -44,6 +46,7 @@ public class Module1CalculationService {
     private final DesignConstantSetRepository designConstantSetRepository;
     private final MotorRepository motorRepository;
     private final Module1ResultRepository module1ResultRepository;
+    private final Module3ResultRepository module3ResultRepository;
 
     @Transactional
     public Module1CalculationResponse calculate(Module1CalculationRequest request) {
@@ -70,6 +73,7 @@ public class Module1CalculationService {
         List<String> calculationNotes = buildCalculationNotes(constantSet);
 
         replaceExistingModule1Result(designCase);
+        replaceExistingModule3Result(designCase);
 
         Module1Result module1Result = Module1Result.builder()
                 .designCase(designCase)
@@ -94,6 +98,20 @@ public class Module1CalculationService {
         designCaseRepository.save(designCase);
 
         return mapToResponse(savedResult, motorRepository.countByIsActiveTrue());
+    }
+
+    @Transactional(readOnly = true)
+    public Module1ReferenceValuesResponse getReferenceValues(Long constantSetId) {
+        DesignConstantSet constantSet = resolveConstantSet(constantSetId);
+        return new Module1ReferenceValuesResponse(
+                constantSet.getId(),
+                constantSet.getSetCode(),
+                constantSet.getSetName(),
+                motorRepository.countByIsActiveTrue(),
+                constantSet.getDefaultBeltRatioU1(),
+                constantSet.getDefaultGearboxRatioUh(),
+                calculateTotalEfficiency(constantSet)
+        );
     }
 
     @Transactional(readOnly = true)
@@ -291,6 +309,15 @@ public class Module1CalculationService {
                 });
     }
 
+    private void replaceExistingModule3Result(DesignCase designCase) {
+        module3ResultRepository.findByDesignCaseId(designCase.getId())
+                .ifPresent(existingResult -> {
+                    designCase.setModule3Result(null);
+                    module3ResultRepository.delete(existingResult);
+                    module3ResultRepository.flush();
+                });
+    }
+
     private Module1CalculationHistoryItemResponse mapToHistoryItem(Module1Result module1Result) {
         DesignCase designCase = module1Result.getDesignCase();
         Motor selectedMotor = module1Result.getSelectedMotor();
@@ -393,8 +420,9 @@ public class Module1CalculationService {
         return List.of(
                 "Constant set " + constantSet.getSetCode() + " was used for this Module 1 calculation.",
                 "Motor selection only considers active motors with rated power greater than or equal to the required motor power, then picks the rpm closest to the preliminary motor rpm.",
-                "Shaft power propagation applies etaOl across three transitions so the shaft states remain consistent with etaKn * etaD * etaBrc * etaBrt * etaOl^3.",
-                "Bevel gear ratio U2 = 3.14 is a temporary placeholder until Module 3 provides the real gearbox split."
+                "Shaft power propagation starts from the selected motor rated power and applies etaOl across three transitions so the shaft states remain consistent with etaKn * etaD * etaBrc * etaBrt * etaOl^3.",
+                "Bevel gear ratio U2 = 3.14 is a temporary placeholder until Module 3 provides the real gearbox split.",
+                "Recalculating an existing case replaces the previous Module 1 result and invalidates any downstream Module 3 result tied to the same design case."
         );
     }
 
