@@ -1,46 +1,72 @@
-HELP.md
-target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# ===== Environment / Secrets =====
+.env
+.env*.local
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# ===== OS =====
+.DS_Store
+Thumbs.db
+Desktop.ini
+ehthumbs.db
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
+# ===== IDE =====
+.idea/
 .vscode/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
 
-### Spring application ###
-/src/main/resources/application.yml
+# ===== Docker =====
+.docker/
 
-### Claude AI ###
+# ===== Backend (Java / Spring Boot / Maven) =====
+drivetrain-calculator_be/target/
+drivetrain-calculator_be/.mvn/wrapper/maven-wrapper.jar
+drivetrain-calculator_be/!**/src/main/**/target/
+drivetrain-calculator_be/!**/src/test/**/target/
+drivetrain-calculator_be/HELP.md
+drivetrain-calculator_be/.apt_generated
+drivetrain-calculator_be/.classpath
+drivetrain-calculator_be/.factorypath
+drivetrain-calculator_be/.project
+drivetrain-calculator_be/.settings/
+drivetrain-calculator_be/.springBeans
+drivetrain-calculator_be/.sts4-cache
+drivetrain-calculator_be/build/
+drivetrain-calculator_be/!**/src/main/**/build/
+drivetrain-calculator_be/!**/src/test/**/build/
+drivetrain-calculator_be/agent_context/
+drivetrain-calculator_be/.claude/
+
+# ===== Frontend (React Native / Expo) =====
+drivetrain-calculator_fe/node_modules/
+drivetrain-calculator_fe/.expo/
+drivetrain-calculator_fe/dist/
+drivetrain-calculator_fe/web-build/
+drivetrain-calculator_fe/expo-env.d.ts
+drivetrain-calculator_fe/.kotlin/
+drivetrain-calculator_fe/.metro-health-check*
+drivetrain-calculator_fe/ios/
+drivetrain-calculator_fe/android/
+drivetrain-calculator_fe/app-example/
+drivetrain-calculator_fe/npm-debug.*
+drivetrain-calculator_fe/yarn-debug.*
+drivetrain-calculator_fe/yarn-error.*
+drivetrain-calculator_fe/*.tsbuildinfo
+
+# ===== Native / Signing keys =====
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.pem
+*.mobileprovision
+
+# ===== Logs =====
+*.log
+
+# ===== Claude AI =====
 .claude/
-CLAUDE.md
-
-### Any other files or directories you want to ignore ###
-agent_context/
-
-postman/
-database/

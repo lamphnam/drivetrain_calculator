@@ -1,0 +1,1214 @@
+% FORMAT AND PACKAGES
+% {
+\documentclass[a4paper]{article}
+\usepackage{a4wide,amssymb,epsfig,latexsym,multicol,array,hhline,fancyhdr}
+\usepackage{vntex}
+\usepackage{amsmath}
+\usepackage{lastpage}
+\usepackage[lined,boxed,commentsnumbered]{algorithm2e}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage{graphicx}						% Standard graphics package
+\usepackage{array}
+\usepackage{tabularx, caption}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{rotating}
+\usepackage{graphics}
+\usepackage{listings}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{epsfig}
+\usepackage{tikz}
+\usepackage{xfrac}
+\usepackage{bm}
+\usepackage{ulem}
+\usepackage{biblatex}
+% \usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{array}
+
+\usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{enumitem}
+
+\usepackage{float}
+\definecolor{cream}{RGB}{255,253,240}  % màu kem nhạt
+\definecolor{sqlblue}{RGB}{0,0,255}    % màu cho keywords
+\definecolor{sqlpurple}{RGB}{128,0,128} % màu cho strings
+
+% Cấu hình cho mã SQL
+\lstset{
+    language=SQL,
+    frame=single,
+    breaklines=true,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{sqlblue},
+    stringstyle=\color{sqlpurple},
+    commentstyle=\color{green!60!black},
+    showstringspaces=false,
+    backgroundcolor=\color{cream},
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    captionpos=b,
+    tabsize=2
+}
+% Cấu hình cho YAML
+\lstdefinelanguage{yaml}{
+    keywords={true, false, null, yes, no},
+    keywordstyle=\color{blue}\bfseries,
+    basicstyle=\ttfamily\small,
+    comment=[l]{\#},
+    commentstyle=\color{green!60!black}\itshape,
+    stringstyle=\color{red},
+    moredelim=**[il][\color{orange}]{\&}, % Đặc biệt chú ý các ký tự tham chiếu
+    moredelim=**[il][\color{orange}]{*}, % Đặc biệt chú ý các ký tự sao chép
+    morestring=[b]',  % Thêm dấu nháy đơn cho chuỗi
+    morestring=[b]",  % Thêm dấu nháy kép cho chuỗi
+}
+
+\usepackage[labelfont=bf, labelsep=colon]{caption}
+\captionsetup[figure]{labelformat=simple, labelsep=colon, name=Hình}
+\usepackage[colorlinks]{hyperref}
+% \usepackage[acronym,toc]{glossaries}
+% \usepackage[symbols,nogroupskip,nonumberlist]{glossaries-extra}
+\usepackage[
+ sort=none,% no sorting or indexing required
+ abbreviations,% create list of abbreviations
+ symbols,% create list of symbols
+ stylemods,style=list, % set the default glossary style
+ nogroupskip, nonumberlist, nomain
+]{glossaries-extra}
+
+
+% FORMATTING
+% {
+\DeclareMathOperator{\arccot}{arccot}
+\captionsetup[table]{name=Table}
+\captionsetup[figure]{name=Figure}
+\newenvironment{Description}{\list{}{%
+    \let\makelabel\descriptionlabel    % this comes from the original description environment
+    \setlength{\rightmargin}{\leftmargin}% this comes from the original quote environment
+    \setlength{\labelwidth}{0pt}%          this is new
+    }}{\endlist}
+
+\addbibresource{citations.bib}
+
+\hypersetup{urlcolor=blue,linkcolor=black,citecolor=black,colorlinks=true}
+\usetikzlibrary{arrows,snakes,backgrounds}
+\definecolor{sqlblue}{RGB}{0,119,170}
+\definecolor{sqlgreen}{RGB}{51,153,51}
+\definecolor{sqlpurple}{RGB}{170,51,119}
+\lstdefinestyle{sqlstyle}{
+    language=SQL,
+    basicstyle=\ttfamily\small,
+    commentstyle=\color{sqlgreen},
+    keywordstyle=\color{sqlblue}\bfseries,
+    stringstyle=\color{sqlpurple},
+    numbers=left,
+    numberstyle=\tiny,
+    numbersep=5pt,
+    frame=single,
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=2,
+    captionpos=b,
+    morekeywords={FOREIGN,REFERENCES,PRIMARY,KEY,CREATE,TABLE,VARCHAR,CHAR,INT,DATE,TIME,DECIMAL}
+}
+% \makeatletter  \def\m@th{\mathsurround\z@\color{mathblue}} \makeatother
+% \everymath{\color{mathblue}}
+% \setmathfont[Color=000000]{Arial}
+%\usepackage{pstcol} 								% PSTricks with the standard color package
+\newtheorem{theorem}{{\bf Theorem}}
+\newtheorem{property}{{\bf Property}}
+\newtheorem{proposition}{{\bf Proposition}}
+\newtheorem{corollary}[proposition]{{\bf Corollary}}
+\newtheorem{lemma}[proposition]{{\bf Lemma}}
+
+\AtBeginDocument{\renewcommand{\listfigurename}{List of Figures}}
+\AtBeginDocument{\renewcommand{\listtablename}{List of Tables}}
+\AtBeginDocument{\renewcommand*\contentsname{Contents}}
+\AtBeginDocument{\renewcommand*\refname{References}}
+%\usepackage{fancyhdr}
+
+\setlength{\headheight}{40pt}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyhead[L]{
+ \begin{tabular}{rl}
+    \begin{picture}(25,15)(0,0)
+    \put(0,-8){\includegraphics[width=8mm, height=8mm]{images/hcmut.png}}
+    %\put(0,-8){\epsfig{width=10mm,figure=hcmut.eps}}
+   \end{picture}&
+	%\includegraphics[width=8mm, height=8mm]{hcmut.png} & %
+	\begin{tabular}{l}
+		\textbf{\bf \ttfamily TRƯỜNG ĐẠI HỌC BÁCH KHOA}\\
+		\textbf{\bf \ttfamily KHOA KHOA HỌC VÀ KĨ THUẬT MÁY TÍNH }
+	\end{tabular}
+ \end{tabular}
+}
+\fancyhead[R]{
+	\begin{tabular}{l}
+		\tiny \bf \\
+		\tiny \bf
+	\end{tabular}  }
+\fancyfoot{} % clear all footer fields
+\fancyfoot[L]{\scriptsize \ttfamily Đồ án tổng hợp - hướng CNPM - Năm học 2025 - 2026}
+\fancyfoot[R]{\scriptsize \ttfamily Page {\thepage}/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\makeatletter
+\newcounter {subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection .\@alph\c@subsubsubsection}
+\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\newcommand*\l@subsubsubsection{\@dottedtocline{3}{10.0em}{4.1em}}
+\newcommand*{\subsubsubsectionmark}[1]{}
+% \def\m@th{\mathsurround\z@\color{mathblue}}
+\makeatother
+% }
+% }
+
+% ACRONYMS & SYMBOLS
+% {
+% \makeglossaries
+\setabbreviationstyle{long-short}
+\newabbreviation{ode}{ODE}{(First-Order) Ordinary Differential Equation}
+\newabbreviation{ivp}{IVP}{Initial-Value Problem}
+\newabbreviation{lte}{LTE}{Local Truncation Error}
+\newabbreviation{ds}{DS}{Dynamical System}
+\newabbreviation{fig}{Fig.}{Figure}
+\newabbreviation{tab}{Tab.}{Table}
+\newabbreviation{sys}{Sys.}{System of Equations}
+\newabbreviation{eq}{Eq.}{Equation}
+\newabbreviation{eg}{e.g.}{For Example}
+\newabbreviation{ie}{i.e.}{That Is}
+% \glsnoexpandfields
+\glsxtrnewsymbol[description = {Set of natural numbers}]{natural}{\ensuremath{\mathbb{N}}}
+\glsxtrnewsymbol[description = {Set of real numbers}]{real}{\ensuremath{\mathbb{R}}}
+\glsxtrnewsymbol[description = {Set of positive real numbers}]{real_positive}{\ensuremath{\mathbb{R}^+}}
+
+% }
+
+% DOCUMENT
+\begin{document}
+\renewcommand{\arraystretch}{1.5}
+% TITLE PAGE
+\begin{titlepage}
+\begin{center}
+ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH \\
+TRƯỜNG ĐẠI HỌC BÁCH KHOA \\
+KHOA KHOA HỌC \& KỸ THUẬT MÁY TÍNH
+\end{center}
+
+\vspace{1cm}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=3cm]{images/hcmut.png}
+\end{center}
+\end{figure}
+
+\vspace{1cm}
+
+
+\begin{center}
+\begin{tabular}{c}
+\multicolumn{1}{l}{\textbf{{\Large  ĐỒ ÁN ĐA NGÀNH - HƯỚNG CNPM (CO3109)}}}\\
+~~\\
+\hline
+\\
+\multicolumn{1}{l}{\textbf{{\Large ĐỀ TÀI}}}\\
+\\
+\textbf{\textit{{\Huge “Hệ thống dẫn động thùng trộn”}}}\\
+\\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{1.5cm}
+
+\begin{table}[h]
+\centering
+    \begin{tabular}{rl}
+    \hspace{3 cm}\textbf{Giảng viên hướng dẫn}:
+    & Ts Trương Vĩnh Lân\\
+
+    & \\[10pt]
+    \textbf{Sinh viên thực hiện}: &  Trần Võ Đại Khánh - 2352536 - Nhóm 10 \emph{(Lớp A03)}\\
+    & Phạm Hoàng Nam - 2352784 - Nhóm 10 \emph{(Lớp A03)}\\
+    & Trần Lâm Anh Khoa - 2352592 - Nhóm 10 \emph{(Lớp A03)}\\
+    & Biện Anh Khôi - 2352598 - Nhóm 10 \emph{(Lớp A03)}\\
+    & Nguyễn Công Tuấn - 2353271 - Nhóm 10 \emph{(Lớp A03)}\\
+    \end{tabular}
+\end{table}
+% \vspace{0.1cm}
+\begin{center}
+{\footnotesize Thành phố Hồ Chí Minh, tháng 04/2026}
+\end{center}
+\end{titlepage}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+
+\section{Requirement elicitation - Tìm hiểu yêu cầu }
+\subsection{Requirement elicitation}
+
+\subsubsection{Xác định động cơ của dự án}
+
+Trong bài toán thiết kế hệ thống dẫn động thùng trộn, bước chọn động cơ và phân phối tỷ số truyền là bước khởi tạo có ý nghĩa quyết định đối với toàn bộ chuỗi tính toán phía sau. Từ các thông số ban đầu của bước này, hệ thống mới có cơ sở để suy ra công suất, số vòng quay và moment xoắn trên từng trục trung gian, từ đó làm đầu vào cho các bài toán thiết kế tiếp theo. Vì vậy, nếu bước khởi tạo được thực hiện thiếu nhất quán hoặc khó kiểm chứng, các kết quả phát sinh ở các giai đoạn sau sẽ khó bảo đảm độ tin cậy.
+
+Trong thực tế học tập và thực hiện đồ án cơ khí, bước tính toán này thường được tiến hành thủ công bằng bảng tính Excel hoặc phân tán trên nhiều tài liệu rời rạc. Cách làm này tuy linh hoạt trong phạm vi nhỏ nhưng bộc lộ nhiều hạn chế khi cần tái sử dụng và chuẩn hóa quy trình. Một số khó khăn điển hình có thể kể đến là: dễ sai lệch khi nhập liệu hoặc chuyển đổi đơn vị; khó kiểm soát phiên bản công thức và giả thiết tính toán; khó truy vết nguồn gốc của kết quả; và thiếu một cấu trúc dữ liệu thống nhất để chuyển tiếp sang các bước xử lý sau. Khi nhóm thực hiện làm việc trên các tệp tính toán riêng lẻ, việc đối chiếu và kiểm tra chéo cũng trở nên tốn thời gian và dễ phát sinh sai khác.
+
+Từ bối cảnh đó, dự án được hình thành theo hướng số hóa bước tiền xử lý của bài toán thiết kế hệ thống dẫn động thùng trộn thành một \textit{calculator engine} tích hợp trong ứng dụng mobile. Trong phạm vi hiện tại, trọng tâm của hệ thống là Module 1, đóng vai trò như \textit{init function} cho toàn bộ chuỗi tính toán. Module này tiếp nhận dữ liệu đầu vào gồm công suất yêu cầu trên trục thùng trộn, số vòng quay yêu cầu, các hằng số hiệu suất của hệ thống và cơ sở dữ liệu động cơ; sau đó thực hiện tính công suất cần thiết của động cơ, lựa chọn động cơ phù hợp, phân phối tỷ số truyền tổng thành các cấp truyền, đồng thời xác định các đặc tính động học trên các trục trung gian.
+
+Động cơ cốt lõi của dự án, do đó, không chỉ nằm ở việc hỗ trợ tính toán nhanh hơn, mà còn ở nhu cầu chuẩn hóa bước khởi tạo bài toán theo một quy trình rõ ràng, có thể lặp lại và có thể truy vết. Việc chuẩn hóa này tạo ra một lớp dữ liệu đầu ra thống nhất cho các module sau, giúp giảm phụ thuộc vào thao tác thủ công, tăng tính nhất quán kỹ thuật giữa các lần tính toán, và tạo nền tảng để phát triển hệ thống theo hướng mô-đun ở các giai đoạn tiếp theo.
+
+\subsubsection{Mong đợi của dự án}
+
+Ở giai đoạn hiện tại, dự án hướng tới việc xây dựng một nền tảng tính toán ban đầu có cấu trúc cho bài toán thiết kế hệ thống dẫn động thùng trộn, thay vì chỉ tạo ra các kết quả số đơn lẻ. Nói cách khác, kết quả mong đợi không dừng ở việc xác định một phương án động cơ, mà còn phải chuẩn hóa được dữ liệu đầu ra của Module 1 để các module kế tiếp có thể tiếp nhận và xử lý một cách nhất quán.
+
+Cụ thể, dự án kỳ vọng đạt được các mục tiêu sau:
+
+\begin{itemize}
+\item Chuẩn hóa quy trình tiếp nhận đầu vào và xử lý của bước chọn động cơ, bảo đảm cùng một tập giả thiết sẽ cho ra một kết quả nhất quán.
+\item Giảm các sai sót thường gặp trong cách tính thủ công, đặc biệt là sai sót về đơn vị, nhầm lẫn công thức, hoặc thiếu đồng nhất khi phân phối tỷ số truyền.
+\item Tạo khả năng truy vết giữa dữ liệu đầu vào, các bước xử lý trung gian và kết quả đầu ra, từ đó hỗ trợ việc kiểm tra và giải thích kết quả tính toán.
+\item Hình thành bộ dữ liệu đầu ra chuẩn hóa gồm \texttt{motor}, \texttt{transmission\_ratios} và \texttt{shafts}, làm đầu vào cho các module tiếp theo của hệ thống.
+\item Làm rõ yêu cầu, mô hình hệ thống và định hướng kiến trúc cho Module 1 trong phạm vi các phần \textit{Requirement elicitation}, \textit{System modeling} và \textit{Architectural design} của báo cáo.
+\end{itemize}
+
+Bên cạnh mục tiêu ứng dụng, đồ án còn hướng tới một giá trị học thuật rõ ràng: mô hình hóa bước tiền xử lý của bài toán thiết kế cơ khí như một thành phần phần mềm có đầu vào, xử lý và đầu ra xác định. Cách tiếp cận này tạo cơ sở để phân tích bài toán cơ khí theo hướng kỹ nghệ phần mềm, trong đó dữ liệu và luồng xử lý được đặc tả nhất quán ngay từ đầu.
+
+Trong phạm vi hiện tại, dự án chưa đặt mục tiêu triển khai đầy đủ toàn bộ chuỗi tính toán của hệ dẫn động. Trọng tâm của đồ án là làm rõ và chuẩn hóa Module 1 như điểm khởi tạo của toàn bộ quá trình tính toán.
+
+\subsubsection{Phạm vi dự án}
+
+Để bảo đảm tính khả thi và phù hợp với mục tiêu của đồ án ở giai đoạn hiện tại, phạm vi dự án được giới hạn rõ ràng như sau:
+
+\subsubsection*{\uline{In scope}}
+
+\begin{itemize}
+\item Xác định và đặc tả yêu cầu cho Module 1: chọn động cơ và phân phối tỷ số truyền trong bài toán thiết kế hệ thống dẫn động thùng trộn.
+\item Mô hình hóa Module 1 như thành phần khởi tạo của hệ thống, với đầu vào là công suất yêu cầu trên trục thùng trộn, số vòng quay yêu cầu, các hằng số hiệu suất và cơ sở dữ liệu động cơ.
+\item Đặc tả luồng xử lý chính của Module 1, bao gồm:
+\begin{itemize}
+\item tính hiệu suất tổng của hệ thống;
+\item tính công suất cần thiết của động cơ;
+\item lựa chọn động cơ phù hợp từ cơ sở dữ liệu;
+\item phân phối tỷ số truyền tổng thành các cấp truyền đai, bánh răng côn và bánh răng trụ;
+\item tính các đặc tính động học của từng trục như công suất, số vòng quay và moment xoắn.
+\end{itemize}
+\item Chuẩn hóa đầu ra của Module 1 thành các cấu trúc dữ liệu phục vụ cho các module sau, trọng tâm gồm \texttt{motor}, \texttt{transmission\_ratios} và \texttt{shafts}.
+\item Xây dựng các artifact cần thiết cho ba phần đầu của báo cáo, gồm \textit{Requirement elicitation}, \textit{System modeling} và \textit{Architectural design}, xoay quanh Module 1.
+\end{itemize}
+
+\subsubsection*{\uline{Out of scope}}
+
+\begin{itemize}
+\item Cài đặt chi tiết các module cơ khí tiếp theo sau Module 1 trong chuỗi tính toán của hệ thống dẫn động.
+\item Trình bày phần implementation, tổ chức sprint, demo hệ thống, đánh giá thực nghiệm, hoặc testing implementation.
+\item Triển khai hoàn chỉnh ứng dụng mobile ở mức phát hành, phân phối hoặc vận hành thực tế trên thiết bị và hạ tầng production.
+\item Các bài toán tối ưu hiệu năng nâng cao, tinh chỉnh thuật toán ở quy mô lớn, hoặc các quyết định kỹ thuật phục vụ vận hành thực tế ngoài nhu cầu của phần 1--3 báo cáo.
+\item Mở rộng phạm vi sang các chức năng ngoài bài toán khởi tạo dữ liệu tính toán cho Module 1.
+\end{itemize}
+
+Với giới hạn trên, đồ án tập trung vào việc làm rõ bước tiền xử lý và khởi tạo của bài toán tính toán cơ khí dưới góc nhìn phân tích và thiết kế hệ thống. Cách tiếp cận này giúp bảo đảm báo cáo có phạm vi rõ ràng, nội dung nhất quán và đủ cơ sở để phát triển tiếp trong các giai đoạn sau mà không làm loãng trọng tâm của đề tài hiện tại.
+
+\newpage
+
+\subsection{Phân tích cách tiếp cận hiện có, xác định yêu cầu và mô tả use case cho Module 1, 3, 4}
+\subsubsection{Phân tích các cách tiếp cận hiện có}
+Trong bối cảnh bài toán thiết kế hệ thống dẫn động thùng trộn, ``sản phẩm hiện có'' không nhất thiết là các ứng dụng thương mại hoàn chỉnh, mà chủ yếu là các cách thức xử lý đang được sử dụng phổ biến trong học tập và thực hành kỹ thuật. Từ góc nhìn phân tích yêu cầu, các cách tiếp cận này có thể xem như những hệ thống tham chiếu, phản ánh cách người dùng hiện đang tiếp cận bài toán chọn động cơ và phân phối tỷ số truyền trước khi có một công cụ tính toán chuyên biệt cho Module 1.
+
+Nhìn chung, các cách làm hiện có có thể chia thành ba nhóm chính: tính toán thủ công trên giấy hoặc tài liệu, sử dụng bảng tính Excel rời rạc, và sử dụng các phần mềm kỹ thuật chuyên sâu. Mỗi nhóm có đặc điểm, ưu điểm và hạn chế khác nhau như sau:
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{4.0cm}|>{\raggedright\arraybackslash}p{4.0cm}|>{\raggedright\arraybackslash}p{4.3cm}|}
+\hline
+\textbf{Nhóm hệ thống hiện có} & \textbf{Đặc điểm} & \textbf{Ưu điểm} & \textbf{Hạn chế} \\ \hline
+\endfirsthead
+
+\multicolumn{4}{c}%
+{\tablename\ \thetable\ -- \textit{Tiếp tục từ trang trước}} \\
+\hline
+\textbf{Nhóm hệ thống hiện có} & \textbf{Đặc điểm} & \textbf{Ưu điểm} & \textbf{Hạn chế} \\ \hline
+\endhead
+
+\hline \multicolumn{4}{r}{\textit{Tiếp tục ở trang kế}} \\
+\endfoot
+
+\hline
+\endlastfoot
+
+Tính toán thủ công trên giấy hoặc tài liệu tham khảo &
+Người thực hiện tự tra bảng, chọn công thức, thế số và tính toán tuần tự theo tài liệu môn học hoặc sổ tay thiết kế máy. Quy trình phụ thuộc nhiều vào kiến thức cá nhân và cách tổ chức tài liệu của từng người. &
+Giúp người học hiểu bản chất công thức, mối liên hệ giữa các đại lượng và trình tự tính toán. Phù hợp trong giai đoạn học nguyên lý hoặc kiểm tra lại một số bước đơn lẻ. &
+Tốn thời gian, khó lặp lại khi thay đổi đầu vào, dễ sai sót khi biến đổi công thức hoặc đổi đơn vị. Việc truy vết và chuyển tiếp kết quả sang các bước sau thường thiếu nhất quán, đặc biệt khi làm việc nhóm. \\ \hline
+
+Bảng tính Excel rời rạc &
+Các công thức được hiện thực hóa trong một hoặc nhiều tệp bảng tính, thường do từng cá nhân hoặc từng nhóm tự xây dựng để hỗ trợ tính nhanh hơn so với cách làm tay. &
+Dễ tiếp cận, triển khai nhanh, thuận tiện cho việc thử nhiều bộ tham số và quan sát kết quả trung gian. Phù hợp với nhu cầu học tập khi phạm vi bài toán còn hẹp. &
+Phụ thuộc mạnh vào cấu trúc file và người tạo file; khó kiểm soát phiên bản công thức; dễ phát sinh lỗi tham chiếu ô, lỗi sao chép công thức hoặc sai đơn vị. Dữ liệu đầu vào và đầu ra thường chưa được chuẩn hóa, nên khó tái sử dụng như một nguồn dữ liệu thống nhất cho các module tiếp theo. \\ \hline
+
+Phần mềm kỹ thuật chuyên sâu &
+Là các công cụ chuyên nghiệp hoặc bán chuyên nghiệp hỗ trợ tính toán, mô phỏng và thiết kế cơ khí ở mức rộng hơn một module cụ thể. Các công cụ này thường tích hợp nhiều chức năng và yêu cầu người dùng có mức độ thành thạo nhất định. &
+Khả năng xử lý mạnh, hỗ trợ quy trình kỹ thuật tương đối đầy đủ, độ chính xác và mức tự động hóa cao nếu được cấu hình đúng. Thích hợp với môi trường thiết kế chuyên nghiệp hoặc các bài toán có phạm vi lớn. &
+Vượt quá nhu cầu của giai đoạn học tập và đồ án hiện tại; chi phí học sử dụng và cấu hình cao; khó bám sát logic học phần nếu chỉ cần giải quyết riêng bước khởi tạo của Module 1. Ngoài ra, các công cụ này không phải lúc nào cũng tạo ra luồng dữ liệu đơn giản, dễ giải thích và thuận tiện cho mục tiêu đặc tả yêu cầu hệ thống. \\ \hline
+
+\end{longtable}
+
+Từ phân tích trên có thể thấy, các cách tiếp cận hiện có đều đáp ứng được một phần nhu cầu thực tế, nhưng chưa giải quyết tốt yêu cầu chuẩn hóa quy trình ở mức vừa đủ cho bối cảnh học tập và đồ án đa ngành. Đây chính là cơ sở để đề xuất một hệ thống tính toán tập trung vào Module 1 với phạm vi hẹp hơn, nhưng có cấu trúc và tính nhất quán cao hơn.
+
+\subsubsection{Phân tích cải tiến so với các hệ thống hiện có}
+Hệ thống được đề xuất trong đồ án không nhằm thay thế hoàn toàn các phần mềm kỹ thuật chuyên nghiệp, mà hướng đến một mục tiêu cụ thể hơn: chuẩn hóa bước khởi tạo của bài toán thiết kế hệ thống dẫn động thùng trộn dưới dạng một \textit{calculator engine} có đầu vào, xử lý và đầu ra rõ ràng. Giá trị cải tiến của hệ thống vì vậy không nằm ở phạm vi chức năng quá rộng, mà ở việc tổ chức lại quy trình tính toán của Module 1 theo hướng nhất quán, dễ kiểm chứng và thuận tiện cho việc mở rộng.
+
+So với các cách làm hiện có, hệ thống đề xuất tập trung cải tiến trên các phương diện sau:
+
+\begin{itemize}
+\item \textbf{Chuẩn hóa đầu vào.} Thay vì để người thực hiện tự tổ chức dữ liệu theo nhiều cách khác nhau, hệ thống xác định rõ các đầu vào cốt lõi của Module 1 gồm công suất yêu cầu trên trục thùng trộn, số vòng quay yêu cầu, các hằng số hiệu suất và cơ sở dữ liệu động cơ. Cách tiếp cận này giúp giảm sai lệch do thiếu hoặc nhầm lẫn dữ liệu đầu vào, đồng thời tạo tiền đề cho việc kiểm tra tính hợp lệ của dữ liệu.
+
+\item \textbf{Gom logic tính toán thành một pipeline nhất quán.} Trong cách làm thủ công hoặc bằng Excel rời rạc, các bước tính thường bị phân mảnh giữa nhiều công thức và nhiều nơi lưu trữ khác nhau. Hệ thống đề xuất tổ chức các bước xử lý theo một pipeline rõ ràng: tính hiệu suất tổng, xác định công suất cần thiết của động cơ, chọn động cơ phù hợp, phân phối tỷ số truyền, và tính các thông số động học trên từng trục. Việc gom logic vào một pipeline giúp tăng khả năng lặp lại và giảm phụ thuộc vào kinh nghiệm cá nhân.
+
+\item \textbf{Tạo đầu ra có cấu trúc.} Thay vì chỉ trả về các giá trị rời rạc hoặc các ô tính riêng lẻ, hệ thống chuẩn hóa kết quả của Module 1 thành các cấu trúc dữ liệu như \texttt{motor}, \texttt{transmission\_ratios} và \texttt{shafts}. Đây là điểm cải tiến quan trọng từ góc nhìn kỹ nghệ phần mềm, vì đầu ra không chỉ phục vụ quan sát kết quả mà còn đóng vai trò là dữ liệu đầu vào chính thức cho các bước xử lý tiếp theo.
+
+\item \textbf{Tạo nền cho các module kế tiếp.} Một trong những hạn chế lớn của cách tính thủ công và bảng tính rời rạc là khó sử dụng kết quả như một ``nguồn dữ liệu chuẩn'' cho các bài toán tiếp theo. Hệ thống đề xuất khắc phục điểm này bằng cách biến Module 1 thành điểm khởi tạo thống nhất của toàn hệ thống, từ đó các module sau có thể kế thừa cùng một tập dữ liệu đã được chuẩn hóa.
+
+\item \textbf{Phù hợp hơn với ngữ cảnh học tập và đồ án đa ngành.} So với phần mềm kỹ thuật chuyên sâu, hệ thống đề xuất có phạm vi hẹp hơn nhưng bám sát hơn nhu cầu của đồ án: vừa đủ để mô hình hóa bài toán dưới góc nhìn phân tích và thiết kế hệ thống, vừa đủ gần với quy trình kỹ thuật thực tế để hỗ trợ người học hiểu luồng xử lý. Điều này đặc biệt quan trọng trong bối cảnh đồ án có giao điểm giữa cơ khí và công nghệ phần mềm.
+\end{itemize}
+
+Tuy vậy, cần nhấn mạnh rằng hệ thống đề xuất không nhằm bao quát toàn bộ năng lực của các công cụ chuyên nghiệp trong môi trường thiết kế cơ khí. Phạm vi cải tiến của hệ thống chủ yếu nằm ở việc chuẩn hóa và đơn giản hóa bước tiền xử lý cho Module 1, phục vụ tốt hơn cho yêu cầu học tập, báo cáo học thuật và phát triển tiếp theo của hệ thống.
+
+Như vậy, so với các hệ thống hiện có, giá trị chính của hệ thống đề xuất nằm ở ba điểm: chuẩn hóa quy trình tính toán, giảm sai sót do thao tác phân tán, và hình thành một \textit{source of truth} cho dữ liệu khởi tạo. Đây là cơ sở quan trọng để các bước phân tích, mô hình hóa và thiết kế kiến trúc ở các phần sau được xây dựng trên cùng một nền dữ liệu nhất quán.
+
+\subsubsection{Yêu cầu chức năng và phi chức năng}
+
+\subsection*{\uline{Yêu cầu chức năng:}}
+Từ phạm vi của Module 1, 3 và 4, hệ thống được xác định là một thành phần khởi tạo và tính toán lõi cho bài toán thiết kế hệ thống dẫn động thùng trộn. Do đó, các yêu cầu chức năng tập trung vào luồng xử lý từ tiếp nhận dữ liệu đầu vào, lựa chọn phương án động cơ (Module 1), đến thiết kế hình học và kiểm nghiệm độ bền bánh răng côn (Module 3) và bánh răng trụ (Module 4), cuối cùng là chuẩn hóa dữ liệu đầu ra để cung cấp cho module thiết kế trục. Các yêu cầu chức năng chính được xác định như sau:
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{1.8cm}|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}p{8.2cm}|}
+\hline
+\textbf{Mã} & \textbf{Tên yêu cầu} & \textbf{Mô tả} \\ \hline
+\endfirsthead
+
+\multicolumn{3}{c}%
+{\tablename\ \thetable\ -- \textit{Tiếp tục từ trang trước}} \\
+\hline
+\textbf{Mã} & \textbf{Tên yêu cầu} & \textbf{Mô tả} \\ \hline
+\endhead
+
+\hline \multicolumn{3}{r}{\textit{Tiếp tục ở trang kế}} \\
+\endfoot
+
+\hline
+\endlastfoot
+
+FR-01 & Nhập dữ liệu đầu vào & Hệ thống phải cho phép người dùng nhập các tham số đầu vào cốt lõi của Module 1, tối thiểu gồm công suất yêu cầu trên trục thùng trộn \(P\) và số vòng quay yêu cầu \(n\). Giao diện nhập liệu phải thể hiện rõ ý nghĩa đại lượng và đơn vị sử dụng để hạn chế nhầm lẫn trong quá trình khai báo dữ liệu. \\ \hline
+
+FR-02 & Kiểm tra tính hợp lệ dữ liệu đầu vào & Hệ thống phải kiểm tra tính đầy đủ, kiểu dữ liệu và miền giá trị hợp lệ của các tham số do người dùng nhập. Trong trường hợp dữ liệu không hợp lệ, hệ thống phải thông báo rõ trường bị lỗi và không cho phép tiếp tục chuỗi tính toán cho đến khi dữ liệu được hiệu chỉnh. \\ \hline
+
+FR-03 & Tải cấu hình hiệu suất hệ thống & Hệ thống phải nạp được các hằng số hiệu suất phục vụ tính toán, bao gồm các hiệu suất thành phần của các cấp truyền và các giả thiết cấu hình liên quan. Các hằng số này có thể được lấy từ cấu hình mặc định của hệ thống hoặc từ nguồn dữ liệu cấu hình đã được xác lập trước. \\ \hline
+
+FR-04 & Truy xuất cơ sở dữ liệu động cơ & Hệ thống phải truy xuất được dữ liệu động cơ từ cơ sở dữ liệu nội bộ để phục vụ bước lựa chọn phương án động cơ. Dữ liệu truy xuất phải bao gồm tối thiểu các thuộc tính cần thiết cho việc đối sánh như mã động cơ, công suất định mức, số vòng quay danh định và các thông tin nhận dạng liên quan. \\ \hline
+
+FR-05 & Tính hiệu suất tổng & Từ các hằng số hiệu suất thành phần, hệ thống phải tính được hiệu suất tổng của hệ thống dẫn động theo đúng quy tắc tính đã xác định trong bài toán. Kết quả này là cơ sở trực tiếp cho bước xác định công suất yêu cầu của động cơ. \\ \hline
+
+FR-06 & Tính công suất yêu cầu của động cơ & Hệ thống phải tính công suất cần thiết của động cơ dựa trên công suất yêu cầu tại trục thùng trộn và hiệu suất tổng của hệ thống. Kết quả phải được lưu dưới dạng dữ liệu trung gian có thể truy vết và sử dụng ở các bước xử lý tiếp theo. \\ \hline
+
+FR-07 & Xác định tỷ số truyền tổng & Hệ thống phải tính tỷ số truyền tổng cần thiết của hệ thống dựa trên số vòng quay yêu cầu của trục thùng trộn và số vòng quay tương ứng của phương án động cơ được xem xét. Giá trị này là ràng buộc đầu vào cho bước phân phối tỷ số truyền theo từng cấp. \\ \hline
+
+FR-08 & Lựa chọn động cơ phù hợp & Hệ thống phải xác định và lựa chọn động cơ phù hợp từ cơ sở dữ liệu trên cơ sở các tiêu chí tính toán của Module 1, đặc biệt là công suất yêu cầu và khả năng đáp ứng số vòng quay. Trong trường hợp có nhiều phương án thỏa mãn, hệ thống phải chọn theo một quy tắc nhất quán đã định nghĩa trước hoặc hiển thị danh sách phương án phù hợp để người dùng xem xét. \\ \hline
+
+FR-09 & Phân phối tỷ số truyền theo các cấp & Hệ thống phải phân phối tỷ số truyền tổng thành các tỷ số truyền thành phần cho bộ truyền đai, bộ truyền bánh răng côn và bộ truyền bánh răng trụ theo tập quy tắc hoặc miền giá trị thiết kế đã được xác định. Kết quả phân phối phải bảo đảm tính nhất quán với tỷ số truyền tổng của toàn hệ thống. \\ \hline
+
+FR-10 & Tính thông số động học cho các trục & Từ phương án động cơ đã chọn và các tỷ số truyền thành phần, hệ thống phải tính được các thông số động học trên từng trục, bao gồm công suất, số vòng quay và moment xoắn. Kết quả này phải được tổ chức theo từng trục để thuận tiện cho việc sử dụng ở các module sau. \\ \hline
+
+FR-11 & Hiển thị kết quả tính toán & Hệ thống phải hiển thị kết quả của Module 1 theo cấu trúc dễ đọc, bao gồm dữ liệu đầu vào, các giá trị trung gian chính và kết quả cuối cùng như động cơ được chọn, tỷ số truyền và thông số của các trục. Cách hiển thị phải hỗ trợ người dùng kiểm tra và đối chiếu các bước tính toán. \\ \hline
+
+FR-12 & Lưu phiên tính toán & Hệ thống phải cho phép lưu lại một phiên tính toán cùng với bộ dữ liệu đầu vào, các tham số cấu hình và kết quả đầu ra tương ứng. Chức năng này nhằm hỗ trợ việc xem lại, so sánh và tái sử dụng kết quả trong quá trình học tập hoặc phát triển tiếp theo. \\ \hline
+
+FR-13 & Xuất dữ liệu có cấu trúc cho các module sau & Hệ thống phải chuẩn hóa đầu ra của Module 1 thành các cấu trúc dữ liệu dùng chung, tối thiểu gồm \texttt{motor}, \texttt{transmission\_ratios} và \texttt{shafts}. Dữ liệu xuất ra phải đủ rõ ràng để được sử dụng làm đầu vào chính thức cho các module tính toán kế tiếp của hệ thống. \\ \hline
+
+FR-14 & Tiếp nhận dữ liệu truyền động nội bộ & Hệ thống phải tự động tiếp nhận các tham số trung gian (moment xoắn \(T\), số vòng quay \(n\), tỷ số truyền \(u\)) từ kết quả của Module 1 làm đầu vào cho Module 3 và 4 mà không yêu cầu người dùng nhập lại. \\ \hline
+
+FR-15 & Tra cứu và cấu hình vật liệu bánh răng & Hệ thống phải truy xuất cơ sở dữ liệu vật liệu để lấy các thông số cơ tính (độ cứng HB, giới hạn bền \(\sigma_b\), giới hạn chảy \(\sigma_{ch}\)) phục vụ việc thiết kế bộ truyền bánh răng côn và bánh răng trụ. \\ \hline
+
+FR-16 & Tính toán ứng suất cho phép & Hệ thống phải tính toán được ứng suất tiếp xúc cho phép \([\sigma_H]\) và ứng suất uốn cho phép \([\sigma_F]\) cho từng cặp bánh răng dựa trên thời gian phục vụ và chu kỳ làm việc cơ sở. \\ \hline
+
+FR-17 & Thiết kế thông số hình học bánh răng & Hệ thống phải tính toán các thông số hình học cốt lõi như module (\(m_{te}, m\)), số răng (\(z_1, z_2\)), chiều dài côn ngoài (\(R_e\)), đường kính vòng chia và bề rộng vành răng (\(b_w\)) theo đúng công thức thực nghiệm. \\ \hline
+
+FR-18 & Kiểm định độ bền bánh răng & Hệ thống phải thực hiện kiểm tra các điều kiện bền tiếp xúc (\(\sigma_H \le [\sigma_H]\)) và bền uốn (\(\sigma_F \le [\sigma_F]\)). Nếu kết quả không thỏa mãn, hệ thống phải ném lỗi (throw exception) hoặc gắn cờ \texttt{isSafe = false} để yêu cầu tính toán lại thông số. \\ \hline
+
+FR-19 & Tính toán vector lực không gian 3D & Hệ thống phải tính toán và phân tích các lực ăn khớp tác dụng lên các trục thành 3 thành phần: Lực vòng (\(F_t\)), lực hướng tâm (\(F_r\)) và lực dọc trục (\(F_a\)). Lực dọc trục của bánh côn này phải được ánh xạ thành lực hướng tâm của bánh côn kia theo nguyên lý vật lý. \\ \hline
+
+FR-20 & Chuẩn hóa đầu ra bộ truyền bánh răng & Hệ thống phải xuất kết quả Module 3 và 4 theo cấu trúc JSON chuẩn bao gồm các block \texttt{gear\_geometry}, \texttt{forces\_applied} và \texttt{validation\_status} để truyền sang bài toán thiết kế trục ở các giai đoạn sau. \\ \hline
+
+\end{longtable}
+
+
+\subsection*{\uline{Yêu cầu phi chức năng:}}
+Bên cạnh các yêu cầu chức năng, hệ thống còn phải đáp ứng các yêu cầu phi chức năng nhằm bảo đảm kết quả tính toán có độ tin cậy, dữ liệu đầu ra nhất quán và kiến trúc đủ khả năng mở rộng cho các giai đoạn tiếp theo. Các yêu cầu phi chức năng được xác định như sau:
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{1.8cm}|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}p{8.2cm}|}
+\hline
+\textbf{Mã} & \textbf{Tên yêu cầu} & \textbf{Mô tả} \\ \hline
+\endfirsthead
+
+\multicolumn{3}{c}%
+{\tablename\ \thetable\ -- \textit{Tiếp tục từ trang trước}} \\
+\hline
+\textbf{Mã} & \textbf{Tên yêu cầu} & \textbf{Mô tả} \\ \hline
+\endhead
+
+\hline \multicolumn{3}{r}{\textit{Tiếp tục ở trang kế}} \\
+\endfoot
+
+\hline
+\endlastfoot
+
+NFR-01 & Tính chính xác của phép tính & Hệ thống phải thực hiện các phép tính theo đúng công thức và quy tắc của bài toán thiết kế đã được xác lập. Kết quả tính toán phải nhất quán với cùng một bộ dữ liệu đầu vào và cùng một bộ tham số cấu hình. \\ \hline
+
+NFR-02 & Tính nhất quán của đầu ra & Với cùng một đầu vào hợp lệ, hệ thống phải sinh ra cùng một cấu trúc đầu ra và cùng một ngữ nghĩa dữ liệu. Điều này đặc biệt quan trọng để các module phía sau có thể sử dụng kết quả của Module 1, 3, 4 như một nguồn dữ liệu chuẩn. \\ \hline
+
+NFR-03 & Khả năng truy vết kết quả & Hệ thống phải cho phép người dùng truy vết từ kết quả cuối cùng về các dữ liệu đầu vào và các bước tính trung gian chính. Mức độ truy vết này nhằm hỗ trợ kiểm tra học thuật, đối chiếu công thức và giải thích quyết định thiết kế (chọn số răng, module). \\ \hline
+
+NFR-04 & Độ tin cậy khi xử lý dữ liệu không hợp lệ & Hệ thống phải xử lý an toàn các trường hợp dữ liệu thiếu, sai kiểu, sai miền giá trị hoặc không đủ điều kiện tính toán. Trong các trường hợp này, hệ thống không được tạo ra kết quả sai ngầm mà phải thông báo lỗi rõ ràng và dừng hoặc giới hạn bước xử lý tương ứng. \\ \hline
+
+NFR-05 & Hiệu năng phản hồi & Đối với một phiên tính toán thông thường, hệ thống phải phản hồi kết quả trong thời gian đủ ngắn để hỗ trợ thao tác tương tác trên thiết bị di động. Yêu cầu này nhằm bảo đảm trải nghiệm sử dụng liên tục và tránh cảm giác đứt quãng. \\ \hline
+
+NFR-06 & Khả năng sử dụng trên thiết bị mobile & Giao diện của hệ thống phải phù hợp với bối cảnh ứng dụng mobile, bảo đảm các thành phần nhập liệu, xem kết quả và thao tác điều hướng có thể sử dụng được trên màn hình kích thước nhỏ. Cách trình bày cần ưu tiên tính rõ ràng và giảm sai sót thao tác. \\ \hline
+
+NFR-07 & Tính dễ hiểu của giao diện & Hệ thống phải trình bày các đại lượng kỹ thuật, đơn vị đo, bước xử lý và kết quả theo cách dễ hiểu đối với người dùng trong bối cảnh học tập. Điều này giúp giảm rào cản sử dụng đối với nhóm người dùng đa ngành, đặc biệt là khi phối hợp giữa kiến thức cơ khí và công nghệ phần mềm. \\ \hline
+
+NFR-08 & Khả năng bảo trì & Logic tính toán, cấu hình hiệu suất và mô hình dữ liệu của hệ thống phải được tổ chức theo cấu trúc rõ ràng để thuận tiện cho việc cập nhật công thức, điều chỉnh tham số hoặc mở rộng nguồn dữ liệu cơ khí trong tương lai. \\ \hline
+
+NFR-09 & Khả năng mở rộng cho các module sau & Kiến trúc dữ liệu và giao diện trao đổi dữ liệu của Module 1, 3, 4 phải đủ ổn định để tích hợp với module tính toán thiết kế Trục và Ổ lăn tiếp theo mà không cần thay đổi lớn về cấu trúc đầu ra JSON. \\ \hline
+
+NFR-10 & Tính độc lập tương đối với nguồn dữ liệu & Hệ thống phải cho phép sử dụng tập dữ liệu động cơ và tập hằng số cấu hình vật liệu dưới dạng có thể thay đổi hoặc cập nhật mà không làm thay đổi bản chất của luồng xử lý cốt lõi. \\ \hline
+
+NFR-11 & Chuẩn hóa làm tròn theo tiêu chuẩn cơ khí & Các thông số thiết kế như số răng (\(z\)), đường kính tiêu chuẩn, module (\(m\)) phải được thuật toán tự động làm tròn nguyên hoặc snap về các giá trị mảng kích thước tiêu chuẩn đã quy định trong cơ sở dữ liệu cơ khí. \\ \hline
+
+NFR-12 & Xử lý sai số tính toán & Hệ thống phải kiểm soát chặt chẽ các sai số sinh ra trong quá trình làm tròn (ví dụ kiểm tra sai số tỷ số truyền thực tế \(\Delta u < 4\%\)). Nếu sai số vượt quá ngưỡng cho phép, hệ thống phải ném lỗi (exception) để yêu cầu thay đổi thiết kế thay vì cho phép pass qua vòng validation. \\ \hline
+
+\end{longtable}
+
+Tập yêu cầu chức năng và phi chức năng nêu trên giữ vai trò làm nền cho toàn bộ hệ thống ở giai đoạn hiện tại. Các yêu cầu chức năng xác định rõ hệ thống phải thực hiện những bước nào trong quá trình tính toán động học và thiết kế bánh răng, trong khi các yêu cầu phi chức năng bảo đảm các bước đó được thực hiện một cách đáng tin cậy, tuân thủ đúng quy chuẩn cơ khí và có khả năng mở rộng. Nhờ đó, output cuối cùng không chỉ là các con số rời rạc, mà trở thành điểm xuất phát chuẩn hóa (JSON payload) cho các bài toán phân tích thiết kế trục ở những phần tiếp theo của báo cáo.
+
+\subsubsection{Use Case Diagrams}
+Trong phạm vi hiện tại, biểu đồ Use Case mô tả các tương tác xoay quanh Module 1 (Chọn động cơ), Module 3 (Bánh răng côn) và Module 4 (Bánh răng trụ) của hệ thống. Mục tiêu của biểu đồ là làm rõ ranh giới hệ thống, các tác nhân tương tác trực tiếp hoặc gián tiếp với các module, và các ca sử dụng ở mức đủ cao để phản ánh nhu cầu nghiệp vụ mà vẫn giữ được sự liên kết với các bước xử lý tính toán cơ khí bên trong.
+
+\subsubsection*{\uline{Phần A --- Xác định actor và use case}}
+
+Trong phạm vi hệ thống, số lượng actor được giữ ở mức tối thiểu để tránh mở rộng không cần thiết.
+\textbf{Người dùng} là actor chính, đại diện cho sinh viên, kỹ sư hoặc người thực hiện bài toán thiết kế sử dụng ứng dụng để nhập dữ liệu, kích hoạt quá trình tính toán và xem kết quả.
+
+Các actor phụ bao gồm \textbf{Kho dữ liệu động cơ} (\textit{Motor Data Repository}) và \textbf{Cơ sở dữ liệu cơ khí} (\textit{Material Repository}). Các actor này hỗ trợ cung cấp dữ liệu tham chiếu (thông số động cơ, cơ tính vật liệu thép) để đối sánh và tính toán. Ngoài ra, \textbf{Module tiếp theo} (\textit{Thiết kế Trục}) đóng vai trò là một downstream actor tiếp nhận JSON payload từ kết quả của Module 3 \& 4.
+
+Trên cơ sở đó, các use case chính ở mức người dùng nhìn thấy được được chia làm các nhóm:
+
+\textbf{Nhóm Module 1 (Chọn động cơ):}
+\begin{itemize}
+\item Nhập yêu cầu thiết kế
+\item Thực hiện tính toán khởi tạo Module 1
+\item Xem kết quả tính toán
+\item Lưu phiên tính toán
+\item Xuất dữ liệu kết quả
+\end{itemize}
+
+\textbf{Nhóm Module 3 \& 4 (Thiết kế Bánh răng):}
+\begin{itemize}
+\item Thực hiện tính toán thiết kế bánh răng côn (Module 3)
+\item Thực hiện tính toán thiết kế bánh răng trụ (Module 4)
+\item Xem kết quả bánh răng
+\item Xuất JSON payload Module 3 \& 4
+\end{itemize}
+
+
+\subsubsection*{\uline{Phần B --- Mô tả sơ đồ use case ở mức hệ thống}}
+
+Ranh giới hệ thống trong biểu đồ được xác định bao trùm các khâu từ khởi tạo đến thiết kế cơ cấu truyền động bên trong hộp giảm tốc. Ở mức nhìn từ phía người dùng, các ca sử dụng trung tâm là các luồng \textbf{Thực hiện tính toán}. 
+
+Về quan hệ giữa các use case, các Use Case trung tâm sẽ dùng quan hệ \textit{include} để gọi các bước tính toán vật lý bắt buộc (tính hiệu suất, tra cứu vật liệu, tính kích thước hình học, kiểm nghiệm độ bền uốn/tiếp xúc). Ngược lại, quan hệ \textit{extend} được sử dụng cho các luồng xử lý ngoại lệ (như báo lỗi sai số tỷ số truyền \(\Delta u > 4\%\), hoặc cảnh báo không thỏa điều kiện bền \(\sigma_H \le [\sigma_H]\)).
+
+\subsubsection*{\uline{Phần C --- Đặc tả ngắn cho từng use case}}
+
+\vspace{0.5cm}
+\textbf{\large I. Nhóm chức năng Module 1: Chọn động cơ}
+\vspace{0.2cm}
+
+\textbf{Use case 1: Nhập yêu cầu thiết kế}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng.
+\item \textbf{Mục tiêu:} Cung cấp bộ dữ liệu đầu vào ban đầu cho Module 1.
+\item \textbf{Tiền điều kiện:} Hệ thống đã sẵn sàng tiếp nhận dữ liệu; biểu mẫu nhập liệu hoặc màn hình nhập thông số đã được mở.
+\item \textbf{Hậu điều kiện:} Hệ thống nhận được bộ tham số đầu vào gồm tối thiểu \(P\) và \(n\), cùng các tham số cấu hình cần thiết nếu người dùng được phép điều chỉnh.
+\item \textbf{Luồng chính:} Người dùng mở chức năng tính toán; nhập công suất yêu cầu trên trục thùng trộn và số vòng quay yêu cầu; xác nhận gửi dữ liệu cho hệ thống.
+\item \textbf{Trường hợp ngoại lệ:} Người dùng bỏ trống trường bắt buộc, nhập sai kiểu dữ liệu hoặc đơn vị không phù hợp.
+\end{itemize}
+
+Xem Figure~\ref{uc1-module1} sau:
+\begin{figure}[ H]
+    \centering
+    \includegraphics[width=1.2\linewidth]{uploads/use-case-1.png}
+    \caption{Use-case Diagram 1 - Nhập yêu cầu thiết kế}
+    \label{uc1-module1}
+\end{figure}
+
+\textbf{Use case 2: Thực hiện tính toán khởi tạo Module 1}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng.
+\item \textbf{Mục tiêu:} Thực hiện toàn bộ pipeline tính toán của Module 1 để sinh ra dữ liệu khởi tạo cho hệ thống.
+\item \textbf{Tiền điều kiện:} Bộ dữ liệu đầu vào đã được cung cấp.
+\item \textbf{Hậu điều kiện:} Hệ thống sinh ra bộ kết quả chuẩn hóa hoặc trả về thông báo lỗi nếu không thể tính toán.
+\item \textbf{Luồng chính:} Người dùng yêu cầu thực hiện tính toán; hệ thống kiểm tra dữ liệu đầu vào; nạp hằng số hiệu suất; tính hiệu suất tổng; tính công suất động cơ yêu cầu; tra cứu dữ liệu động cơ; chọn động cơ phù hợp; tính tỷ số truyền tổng; phân phối tỷ số truyền; tính thông số động học cho các trục; chuẩn hóa dữ liệu đầu ra.
+\item \textbf{Trường hợp ngoại lệ:} Dữ liệu đầu vào không hợp lệ; không tìm thấy động cơ phù hợp; không thể phân phối tỷ số truyền thỏa điều kiện thiết kế.
+\end{itemize}
+
+Xem Figure~\ref{uc2-module1} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.1\linewidth]{uploads/use-case-2.png}
+    \caption{Use-case Diagram 2 - Thực hiện tính toán khởi tạo Module 1}
+    \label{uc2-module1}
+\end{figure}
+
+\textbf{Use case 3 \& 4: Xem và lưu kết quả tính toán}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng.
+\item \textbf{Mục tiêu:} Quan sát, kiểm tra và lưu lại bộ dữ liệu của một lần tính toán để sử dụng hoặc đối chiếu về sau.
+\item \textbf{Tiền điều kiện:} Một phiên tính toán đã được thực hiện thành công.
+\item \textbf{Luồng chính:} Hệ thống hiển thị động cơ được chọn, tỷ số truyền tổng và thành phần, thông số động học của từng trục. Người dùng chọn chức năng lưu; hệ thống ghi nhận bộ dữ liệu phiên tính toán.
+\item \textbf{Trường hợp ngoại lệ:} Không có kết quả do phiên tính toán thất bại hoặc bị hủy trước đó.
+\end{itemize}
+
+Xem Figure~\ref{uc3-4-module1} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{uploads/use-case-3-4.png}
+    \caption{Use-case Diagram 3 \& 4 - Quản lý kết quả sau tính toán}
+    \label{uc3-4-module1}
+\end{figure}
+
+\textbf{Use case 5: Xuất dữ liệu kết quả}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng.
+\item \textbf{Mục tiêu:} Xuất kết quả của Module 1 dưới dạng dữ liệu có cấu trúc để phục vụ các module sau hoặc mục đích đối chiếu.
+\item \textbf{Tiền điều kiện:} Kết quả tính toán hợp lệ đã tồn tại.
+\item \textbf{Luồng chính:} Người dùng chọn chức năng xuất dữ liệu; hệ thống tạo dữ liệu cấu trúc hóa gồm \texttt{motor}, \texttt{transmission\_ratios} và \texttt{shafts}; hệ thống trả kết quả xuất cho người dùng hoặc cho thành phần tiếp theo.
+\item \textbf{Trường hợp ngoại lệ:} Kết quả hiện tại chưa đầy đủ hoặc dữ liệu không thể chuẩn hóa theo định dạng yêu cầu.
+\end{itemize}
+
+Xem Figure~\ref{uc5-module1} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{uploads/use-case-5.png}
+    \caption{Use-case Diagram 5 - Xuất dữ liệu kết quả trực quan}
+    \label{uc5-module1}
+\end{figure}
+\clearpage
+
+
+\vspace{0.5cm}
+\textbf{\large II. Nhóm chức năng Module 3 \& 4: Thiết kế Bánh răng}
+\vspace{0.2cm}
+
+\textbf{Use case 6: Thực hiện tính toán thiết kế bánh răng côn (Module 3)}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng, Cơ sở dữ liệu cơ khí.
+\item \textbf{Mục tiêu:} Thiết kế kích thước và kiểm nghiệm độ bền bộ truyền bánh răng côn dựa trên kết quả của Module 1.
+\item \textbf{Tiền điều kiện:} Module 1 đã hoàn tất và cung cấp đủ tham số truyền động (\(T_1, n_1, u_2\)).
+\item \textbf{Hậu điều kiện:} Hệ thống sinh ra bộ thông số hình học bánh răng côn, trạng thái độ bền và Vector lực không gian 3D.
+\item \textbf{Luồng chính:} Hệ thống tự động tiếp nhận dữ liệu từ Module 1; tra cứu vật liệu (Thép C40XH); tính toán ứng suất cho phép; thiết kế thông số hình học (\(R_e, m_{te}, z\)); kiểm nghiệm độ bền uốn và tiếp xúc; tính toán Vector lực (\(F_t, F_r, F_a\)).
+\item \textbf{Trường hợp ngoại lệ:} Không thỏa mãn điều kiện ứng suất (\(\sigma_H > [\sigma_H]\) hoặc \(\sigma_F > [\sigma_F]\)), hệ thống báo lỗi yêu cầu chọn lại vật liệu hoặc tăng module.
+\end{itemize}
+
+Xem Figure~\ref{uc6-module3} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{uploads/use-case-6.png}
+    \caption{Use-case Diagram 6 - Thực hiện tính toán Module 3}
+    \label{uc6-module3}
+\end{figure}
+
+\textbf{Use case 7: Thực hiện tính toán thiết kế bánh răng trụ (Module 4)}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng, Cơ sở dữ liệu cơ khí.
+\item \textbf{Mục tiêu:} Thiết kế kích thước và kiểm nghiệm độ bền bộ truyền bánh răng trụ nghiêng/thẳng.
+\item \textbf{Tiền điều kiện:} Đã có dữ liệu truyền động (\(T_2, n_2, u_3\)).
+\item \textbf{Hậu điều kiện:} Hệ thống sinh ra thông số bánh răng trụ và Vector lực tương ứng.
+\item \textbf{Luồng chính:} Tra cứu vật liệu; tính khoảng cách trục \(a_w\), module \(m\), số răng \(z\); tính toán hệ số tải trọng; kiểm tra độ bền; xuất lực vòng và hướng tâm.
+\item \textbf{Trường hợp ngoại lệ:} Sai số tỷ số truyền thực tế lớn hơn 4\% (\(\Delta u > 4\%\)), hệ thống cảnh báo yêu cầu làm tròn lại số răng.
+\end{itemize}
+
+Xem Figure~\ref{uc7-module4} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{uploads/use-case-7.png}
+    \caption{Use-case Diagram 7 - Thực hiện tính toán Module 4}
+    \label{uc7-module4}
+\end{figure}
+
+\textbf{Use case 8: Quản lý và Xuất kết quả Bánh răng (Module 3 \& 4)}
+\begin{itemize}
+\item \textbf{Actor:} Người dùng, Module tiếp theo (Thiết kế Trục).
+\item \textbf{Mục tiêu:} Đóng gói và xuất dữ liệu vật lý của các bánh răng để làm Source of Truth cho các module sau.
+\item \textbf{Tiền điều kiện:} Quá trình Validation của Module 3 và 4 đều Pass.
+\item \textbf{Hậu điều kiện:} JSON payload chứa các block \texttt{gear\_geometry}, \texttt{forces\_applied} và \texttt{validation\_status} được khởi tạo thành công.
+\item \textbf{Luồng chính:} Người dùng xem chi tiết các thông số trên giao diện; người dùng chọn xuất dữ liệu; hệ thống đóng gói JSON và chuyển tiếp luồng dữ liệu sang bài toán thiết kế trục.
+\end{itemize}
+
+Xem Figure~\ref{uc8-module34} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{uploads/use-case-8.png}
+    \caption{Use-case Diagram 8 - Quản lý kết quả Module 3 \& 4}
+    \label{uc8-module34}
+\end{figure}
+
+\clearpage
+
+\section{System modeling}
+\subsection{Activity Diagrams}
+Phần này trình bày các biểu đồ hoạt động (Activity Diagrams) cho phạm vi Module 1 của hệ thống, tức bước chọn động cơ và phân phối tỷ số truyền. Các biểu đồ tập trung mô tả luồng xử lý nghiệp vụ ở mức hệ thống, làm rõ trình tự hoạt động, các điểm kiểm tra điều kiện và các nhánh xử lý lỗi quan trọng.
+
+\subsubsection{AD1: Thực hiện tính toán Module 1}
+
+Biểu đồ AD1 mô tả luồng hoạt động tổng thể khi người dùng thực hiện một phiên tính toán của Module 1. Mục đích của biểu đồ là thể hiện đầy đủ pipeline xử lý từ thời điểm nhập dữ liệu thiết kế ban đầu đến khi hệ thống sinh ra bộ kết quả chuẩn hóa phục vụ cho các bước tính tiếp theo.
+
+\textbf{Luồng hoạt động chính:}
+\begin{itemize}
+\item Người dùng mở màn hình tính toán của Module 1.
+\item Hệ thống hiển thị biểu mẫu nhập dữ liệu đầu vào, trong đó tối thiểu gồm công suất yêu cầu trên trục thùng trộn \(P\) và số vòng quay yêu cầu \(n\).
+\item Người dùng nhập dữ liệu và gửi yêu cầu tính toán.
+\item Hệ thống kiểm tra tính đầy đủ, kiểu dữ liệu và miền giá trị của các tham số đầu vào.
+\item Nếu dữ liệu hợp lệ, hệ thống tải các hằng số hiệu suất và nạp dữ liệu động cơ từ nguồn dữ liệu tương ứng.
+\item Hệ thống tính hiệu suất tổng của hệ thống dẫn động.
+\item Hệ thống tính công suất yêu cầu của động cơ dựa trên công suất đầu ra yêu cầu và hiệu suất tổng.
+\item Hệ thống thực hiện bước chọn động cơ phù hợp từ cơ sở dữ liệu.
+\item Từ động cơ đã chọn, hệ thống tính tỷ số truyền tổng cần thiết.
+\item Hệ thống phân phối tỷ số truyền tổng thành các cấp truyền thành phần.
+\item Hệ thống tính các thông số động học trên từng trục, bao gồm công suất, số vòng quay và moment xoắn.
+\item Hệ thống chuẩn hóa kết quả thành cấu trúc dữ liệu đầu ra và hiển thị kết quả cho người dùng; nếu cần, người dùng có thể lưu hoặc xuất kết quả.
+\end{itemize}
+
+\textbf{Các decision point và validation point:}
+\begin{itemize}
+\item Kiểm tra dữ liệu đầu vào có hợp lệ hay không.
+\item Kiểm tra cấu hình hiệu suất và dữ liệu động cơ có sẵn hay không.
+\item Kiểm tra có tìm được động cơ phù hợp hay không.
+\item Kiểm tra việc phân phối tỷ số truyền có thỏa điều kiện thiết kế hay không.
+\end{itemize}
+
+\textbf{Input và output quan trọng:}
+\begin{itemize}
+\item \textbf{Input:} \(P\), \(n\), các hằng số hiệu suất, cơ sở dữ liệu động cơ.
+\item \textbf{Output:} động cơ được chọn, tỷ số truyền tổng và các tỷ số truyền thành phần, thông số động học của các trục, cùng dữ liệu chuẩn hóa gồm \texttt{motor}, \texttt{transmission\_ratios} và \texttt{shafts}.
+\end{itemize}
+
+\textbf{Nhánh xử lý lỗi:}
+\begin{itemize}
+\item Nếu dữ liệu đầu vào không hợp lệ, hệ thống dừng quá trình tính toán, thông báo lỗi và yêu cầu người dùng chỉnh sửa dữ liệu.
+\item Nếu không tải được cấu hình hoặc dữ liệu động cơ, hệ thống thông báo lỗi nguồn dữ liệu và không tiếp tục xử lý.
+\item Nếu không tìm được động cơ phù hợp hoặc không thể phân phối tỷ số truyền theo điều kiện đặt ra, hệ thống trả về trạng thái thất bại của phiên tính toán kèm thông báo phù hợp.
+\end{itemize}
+
+\textbf{Đặc tả để dựng Activity Diagram:}
+\begin{enumerate}
+\item Nút bắt đầu.
+\item Hành động ``Người dùng mở màn hình tính toán Module 1''.
+\item Hành động ``Hệ thống hiển thị biểu mẫu nhập \(P\) và \(n\)''.
+\item Hành động ``Người dùng nhập dữ liệu và gửi yêu cầu tính toán''.
+\item Hành động ``Kiểm tra dữ liệu đầu vào''.
+\item Nút quyết định ``Dữ liệu đầu vào hợp lệ?''.
+\item Nếu ``Không'': chuyển đến hành động ``Thông báo lỗi dữ liệu'' rồi quay về bước nhập dữ liệu hoặc kết thúc.
+\item Nếu ``Có'': chuyển đến hành động ``Tải hằng số hiệu suất''.
+\item Hành động ``Tải dữ liệu động cơ''.
+\item Nút quyết định ``Nguồn dữ liệu sẵn sàng?''.
+\item Nếu ``Không'': chuyển đến hành động ``Thông báo lỗi cấu hình hoặc dữ liệu'' rồi kết thúc.
+\item Nếu ``Có'': chuyển đến hành động ``Tính hiệu suất tổng''.
+\item Hành động ``Tính công suất yêu cầu của động cơ''.
+\item Hành động ``Chọn động cơ phù hợp''.
+\item Nút quyết định ``Tìm thấy động cơ phù hợp?''.
+\item Nếu ``Không'': chuyển đến hành động ``Thông báo không tìm thấy động cơ phù hợp'' rồi kết thúc.
+\item Nếu ``Có'': chuyển đến hành động ``Tính tỷ số truyền tổng''.
+\item Hành động ``Phân phối tỷ số truyền''.
+\item Nút quyết định ``Phân phối tỷ số truyền hợp lệ?''.
+\item Nếu ``Không'': chuyển đến hành động ``Thông báo không thể phân phối tỷ số truyền'' rồi kết thúc.
+\item Nếu ``Có'': chuyển đến hành động ``Tính thông số động học các trục''.
+\item Hành động ``Chuẩn hóa dữ liệu đầu ra''.
+\item Hành động ``Hiển thị kết quả tính toán''.
+\item Hành động tùy chọn ``Lưu hoặc xuất kết quả''.
+\item Nút kết thúc.
+\end{enumerate}
+
+Xem Figure~\ref{ad1-module1} sau:
+\begin{figure}[H]
+    \centering
+    \IfFileExists{uploads/activity-diagram-1.png}{%
+        \includegraphics[width=1\linewidth]{uploads/activity-diagram-1.png}%
+    }{%
+        \fbox{\parbox{0.9\linewidth}{\centering Chưa tìm thấy tệp ảnh \texttt{uploads/activity-diagram-1.png}. Hãy thay bằng đúng tên ảnh Activity Diagram 1 của bạn.}}%
+    }
+    \caption{Activity Diagram 1 - Thực hiện tính toán Module 1}
+    \label{ad1-module1}
+\end{figure}
+
+\subsubsection{AD2: Chọn động cơ phù hợp từ cơ sở dữ liệu}
+
+Biểu đồ AD2 mô tả chi tiết hoạt động nội bộ của bước chọn động cơ trong Module 1. Mục đích của biểu đồ là làm rõ cách hệ thống tiếp nhận các tham số tính toán trung gian, duyệt danh sách động cơ trong cơ sở dữ liệu, đánh giá mức độ phù hợp của từng phương án và trả về phương án tối ưu hoặc thông báo không tìm thấy kết quả phù hợp.
+
+\textbf{Luồng hoạt động chính:}
+\begin{itemize}
+\item Hệ thống nhận đầu vào cho bước chọn động cơ, bao gồm công suất yêu cầu của động cơ \(P_{ct}\) và số vòng quay yêu cầu hoặc số vòng quay tham chiếu \(n_{sb}\).
+\item Hệ thống truy xuất danh sách động cơ từ cơ sở dữ liệu.
+\item Hệ thống duyệt lần lượt từng động cơ trong danh sách.
+\item Với mỗi động cơ, hệ thống kiểm tra điều kiện công suất định mức có đáp ứng công suất yêu cầu hay không.
+\item Các động cơ không đạt điều kiện công suất bị loại khỏi tập ứng viên.
+\item Với các động cơ đạt điều kiện công suất, hệ thống tiếp tục đánh giá độ gần giữa số vòng quay danh định của động cơ và giá trị tham chiếu \(n_{sb}\).
+\item Hệ thống ghi nhận hoặc cập nhật phương án tốt nhất theo tiêu chí lựa chọn đã xác định.
+\item Sau khi duyệt hết danh sách, hệ thống kiểm tra xem có tồn tại phương án phù hợp hay không.
+\item Nếu có, hệ thống trả về thông tin động cơ đã chọn; nếu không, hệ thống trả về thông báo không tìm thấy động cơ phù hợp.
+\end{itemize}
+
+\textbf{Các decision point và validation point:}
+\begin{itemize}
+\item Kiểm tra cơ sở dữ liệu động cơ có dữ liệu hay không.
+\item Kiểm tra từng động cơ có thỏa điều kiện công suất yêu cầu hay không.
+\item So sánh và đánh giá mức độ phù hợp về số vòng quay giữa các ứng viên.
+\item Kiểm tra sau vòng lặp xem có ứng viên phù hợp cuối cùng hay không.
+\end{itemize}
+
+\textbf{Input và output quan trọng:}
+\begin{itemize}
+\item \textbf{Input:} \(P_{ct}\), \(n_{sb}\), danh sách động cơ trong cơ sở dữ liệu.
+\item \textbf{Output:} thông tin động cơ được chọn hoặc thông báo không tìm thấy động cơ phù hợp.
+\end{itemize}
+
+\textbf{Nhánh xử lý lỗi:}
+\begin{itemize}
+\item Nếu cơ sở dữ liệu động cơ rỗng hoặc không truy xuất được, hệ thống dừng bước chọn động cơ và trả về lỗi dữ liệu.
+\item Nếu không có động cơ nào đáp ứng công suất yêu cầu, hệ thống thông báo không có phương án phù hợp.
+\item Nếu có nhiều động cơ đáp ứng, hệ thống áp dụng tiêu chí độ gần về số vòng quay để chọn ra phương án phù hợp nhất với yêu cầu của bài toán.
+\end{itemize}
+
+\textbf{Đặc tả để dựng Activity Diagram:}
+\begin{enumerate}
+\item Nút bắt đầu.
+\item Hành động ``Nhận \(P_{ct}\) và \(n_{sb}\)''.
+\item Hành động ``Truy xuất danh sách động cơ từ cơ sở dữ liệu''.
+\item Nút quyết định ``Danh sách động cơ có sẵn?''.
+\item Nếu ``Không'': chuyển đến hành động ``Thông báo lỗi dữ liệu động cơ'' rồi kết thúc.
+\item Nếu ``Có'': chuyển đến hành động ``Khởi tạo danh sách ứng viên hoặc phương án tốt nhất''.
+\item Hành động ``Lấy một động cơ trong danh sách''.
+\item Nút quyết định ``Công suất động cơ có đáp ứng \(P_{ct}\)?''.
+\item Nếu ``Không'': chuyển đến bước kiểm tra còn động cơ tiếp theo hay không.
+\item Nếu ``Có'': chuyển đến hành động ``Đánh giá độ gần của số vòng quay so với \(n_{sb}\)''.
+\item Hành động ``Cập nhật phương án tốt nhất nếu cần''.
+\item Nút quyết định ``Còn động cơ chưa xét?''.
+\item Nếu ``Có'': quay lại bước ``Lấy một động cơ trong danh sách''.
+\item Nếu ``Không'': chuyển đến nút quyết định ``Có phương án phù hợp?''.
+\item Nếu ``Không'': chuyển đến hành động ``Thông báo không tìm thấy động cơ phù hợp'' rồi kết thúc.
+\item Nếu ``Có'': chuyển đến hành động ``Trả về thông tin động cơ đã chọn''.
+\item Nút kết thúc.
+\end{enumerate}
+
+Xem Figure~\ref{ad2-module1} sau:
+\begin{figure}[H]
+    \centering
+    \IfFileExists{uploads/activity-diagram-2.png}{%
+        \includegraphics[width=1\linewidth]{uploads/activity-diagram-2.png}%
+    }{%
+        \fbox{\parbox{0.9\linewidth}{\centering Chưa tìm thấy tệp ảnh \texttt{uploads/activity-diagram-2.png}. Hãy thay bằng đúng tên ảnh Activity Diagram 2 của bạn.}}%
+    }
+    \caption{Activity Diagram 2 - Chọn động cơ phù hợp từ cơ sở dữ liệu}
+    \label{ad2-module1}
+\end{figure}
+
+
+\subsection{Sequence Diagrams}
+Phần này trình bày các biểu đồ tuần tự (Sequence Diagrams) cho phạm vi Module 1. Các biểu đồ tập trung mô tả thứ tự trao đổi thông điệp giữa các đối tượng của hệ thống khi người dùng thực hiện tính toán và khi hệ thống tra cứu, lựa chọn động cơ từ cơ sở dữ liệu.
+
+\subsubsection{SD1: User thực hiện tính toán Module 1}
+
+Biểu đồ SD1 mô tả tương tác tổng thể giữa người dùng và các thành phần chính của hệ thống khi thực hiện một phiên tính toán Module 1. Mục đích của biểu đồ là làm rõ vai trò điều phối của thành phần xử lý trung tâm, cũng như cách dữ liệu đầu vào được kiểm tra, tính toán và chuyển thành kết quả đầu ra có cấu trúc.
+
+\textbf{Các lifeline / đối tượng tham gia:}
+\begin{itemize}
+\item \textbf{User}: người khởi tạo phiên tính toán.
+\item \textbf{Mobile UI}: giao diện nhập liệu và hiển thị kết quả trên ứng dụng.
+\item \textbf{Module1 Controller}: thành phần tiếp nhận yêu cầu tính toán từ giao diện.
+\item \textbf{Module1 Service / Calculator Engine}: thành phần điều phối toàn bộ pipeline xử lý của Module 1.
+\item \textbf{Config Repository}: nguồn cung cấp các hằng số hiệu suất và cấu hình tính toán.
+\item \textbf{Motor Repository}: nguồn dữ liệu động cơ.
+\item \textbf{Motor Selection Service}: thành phần phụ trách tra cứu và chọn động cơ phù hợp.
+\item \textbf{Result Store}: thành phần lưu phiên tính toán hoặc ghi nhận kết quả nếu hệ thống hỗ trợ chức năng lưu.
+\end{itemize}
+
+\textbf{Trình tự thông điệp chính:}
+\begin{enumerate}
+\item User nhập \(P\) và \(n\) trên Mobile UI và gửi yêu cầu tính toán.
+\item Mobile UI gửi yêu cầu tính toán tới Module1 Controller.
+\item Module1 Controller chuyển bộ dữ liệu đầu vào cho Module1 Service.
+\item Module1 Service kiểm tra tính hợp lệ của dữ liệu đầu vào.
+\item Nếu dữ liệu hợp lệ, Module1 Service yêu cầu Config Repository trả về các hằng số hiệu suất và cấu hình liên quan.
+\item Module1 Service đồng thời hoặc tuần tự yêu cầu Motor Repository cung cấp dữ liệu động cơ phục vụ bước lựa chọn.
+\item Module1 Service tính hiệu suất tổng và công suất yêu cầu của động cơ.
+\item Module1 Service gửi \(P_{ct}\), giá trị tốc độ tham chiếu và danh sách động cơ cho Motor Selection Service.
+\item Motor Selection Service xử lý bước chọn động cơ và trả về phương án động cơ phù hợp.
+\item Module1 Service dùng kết quả động cơ đã chọn để tính tỷ số truyền tổng, phân phối tỷ số truyền và tính các thông số động học trên các trục.
+\item Module1 Service chuẩn hóa dữ liệu đầu ra.
+\item Nếu người dùng yêu cầu lưu phiên tính toán, Module1 Service gửi dữ liệu kết quả tới Result Store.
+\item Module1 Service trả kết quả cuối cùng cho Module1 Controller.
+\item Module1 Controller gửi dữ liệu kết quả về Mobile UI để hiển thị cho User.
+\end{enumerate}
+
+\textbf{Dữ liệu trao đổi chính:}
+\begin{itemize}
+\item Từ User / Mobile UI tới hệ thống: \(P\), \(n\), cùng các lựa chọn cấu hình nếu được hỗ trợ.
+\item Từ Config Repository tới Module1 Service: các hằng số hiệu suất, giới hạn hoặc tham số cấu hình.
+\item Từ Motor Repository tới Module1 Service hoặc Motor Selection Service: danh sách động cơ với các thuộc tính cần thiết cho việc đối sánh.
+\item Từ Module1 Service tới Motor Selection Service: công suất yêu cầu động cơ \(P_{ct}\), tốc độ tham chiếu và tập động cơ ứng viên.
+\item Từ hệ thống trả về giao diện: động cơ được chọn, tỷ số truyền, thông số các trục, và dữ liệu đầu ra chuẩn hóa.
+\end{itemize}
+
+\textbf{Điều kiện rẽ nhánh hoặc lỗi:}
+\begin{itemize}
+\item Nếu dữ liệu đầu vào không hợp lệ, Module1 Service trả về lỗi kiểm tra dữ liệu ngay cho Module1 Controller, sau đó Mobile UI hiển thị thông báo lỗi cho User.
+\item Nếu Config Repository hoặc Motor Repository không cung cấp được dữ liệu cần thiết, hệ thống kết thúc phiên xử lý với thông báo lỗi nguồn dữ liệu.
+\item Nếu Motor Selection Service không tìm được động cơ phù hợp, Module1 Service trả về trạng thái thất bại của bước chọn động cơ và không tiếp tục các bước tính toán sau.
+\item Nếu quá trình phân phối tỷ số truyền không thỏa điều kiện thiết kế, hệ thống trả về lỗi tính toán thay vì sinh kết quả không hợp lệ.
+\end{itemize}
+
+\textbf{Đặc tả để dựng Sequence Diagram:}
+\begin{enumerate}
+\item Tạo các lifeline theo thứ tự từ trái sang phải: User, Mobile UI, Module1 Controller, Module1 Service, Config Repository, Motor Repository, Motor Selection Service, Result Store.
+\item User gửi thông điệp ``submitDesignInput(P, n)'' tới Mobile UI.
+\item Mobile UI gửi ``requestCalculation(P, n)'' tới Module1 Controller.
+\item Module1 Controller gửi ``executeModule1(input)'' tới Module1 Service.
+\item Module1 Service tự gọi hoặc xử lý nội bộ ``validateInput()''.
+\item Dùng khối \texttt{alt}: nếu dữ liệu không hợp lệ, Module1 Service trả ``validationError'' về Module1 Controller, rồi Controller trả lỗi cho Mobile UI.
+\item Nếu dữ liệu hợp lệ, Module1 Service gửi ``loadConstants()'' tới Config Repository và nhận về ``constants''.
+\item Module1 Service gửi ``loadMotors()'' tới Motor Repository và nhận về ``motorList''.
+\item Module1 Service thực hiện nội bộ ``calculateTotalEfficiency()'' và ``calculateRequiredMotorPower()''.
+\item Module1 Service gửi ``selectMotor(Pct, nsb, motorList)'' tới Motor Selection Service.
+\item Motor Selection Service trả về ``selectedMotor'' hoặc ``notFound''.
+\item Dùng khối \texttt{alt}: nếu ``notFound'', Module1 Service trả lỗi về Module1 Controller rồi tới Mobile UI.
+\item Nếu có ``selectedMotor'', Module1 Service tiếp tục nội bộ ``calculateTotalRatio()'', ``distributeRatios()'' và ``calculateShaftData()''.
+\item Module1 Service thực hiện ``buildStructuredOutput()''.
+\item Dùng khối \texttt{opt}: nếu người dùng chọn lưu kết quả, Module1 Service gửi ``saveCalculationSession(output)'' tới Result Store và nhận ``saveSuccess''.
+\item Module1 Service trả ``module1Result'' cho Module1 Controller.
+\item Module1 Controller trả ``displayResult(module1Result)'' cho Mobile UI.
+\item Mobile UI hiển thị kết quả cho User.
+\end{enumerate}
+
+Xem Figure~\ref{sd1-module1} sau:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{uploads/sequence-diagram-1.png}
+    \caption{Sequence Diagram 1 - User thực hiện tính toán Module 1}
+    \label{sd1-module1}
+\end{figure}
+
+\subsubsection{SD2: Hệ thống tra cứu và chọn động cơ}
+
+Biểu đồ SD2 mô tả riêng bước tra cứu và lựa chọn động cơ trong Module 1. Mục đích của biểu đồ là làm rõ cơ chế tương tác giữa thành phần điều phối tính toán, nguồn dữ liệu động cơ và thành phần lựa chọn động cơ, đặc biệt trong trường hợp có nhiều ứng viên hoặc không tồn tại phương án phù hợp.
+
+\textbf{Các lifeline / đối tượng tham gia:}
+\begin{itemize}
+\item \textbf{Module1 Service}: thành phần khởi tạo yêu cầu chọn động cơ sau khi đã tính được công suất yêu cầu.
+\item \textbf{Motor Selection Service}: thành phần xử lý logic lọc và đánh giá động cơ.
+\item \textbf{Motor Repository}: thành phần truy xuất dữ liệu động cơ.
+\item \textbf{Motor Candidate}: đối tượng biểu diễn từng bản ghi động cơ trong quá trình đánh giá; trong sơ đồ có thể biểu diễn bằng vòng lặp trên tập dữ liệu, không nhất thiết tách thành nhiều lifeline độc lập.
+\end{itemize}
+
+\textbf{Trình tự thông điệp chính:}
+\begin{enumerate}
+\item Module1 Service gửi yêu cầu chọn động cơ tới Motor Selection Service, kèm theo \(P_{ct}\) và \(n_{sb}\).
+\item Motor Selection Service gửi yêu cầu truy xuất danh sách động cơ tới Motor Repository.
+\item Motor Repository trả về danh sách động cơ hiện có.
+\item Motor Selection Service khởi tạo tập ứng viên hoặc biến lưu phương án tốt nhất.
+\item Motor Selection Service duyệt lần lượt từng động cơ trong danh sách.
+\item Với mỗi động cơ, hệ thống kiểm tra điều kiện công suất định mức có đáp ứng \(P_{ct}\) hay không.
+\item Nếu động cơ thỏa điều kiện công suất, hệ thống tiếp tục tính hoặc đánh giá độ lệch tốc độ so với \(n_{sb}\).
+\item Motor Selection Service so sánh động cơ hiện tại với phương án tốt nhất tạm thời và cập nhật nếu cần.
+\item Sau khi kết thúc vòng lặp, Motor Selection Service xác định phương án cuối cùng.
+\item Motor Selection Service trả về động cơ được chọn cho Module1 Service hoặc trả về trạng thái không tìm thấy.
+\end{enumerate}
+
+\textbf{Dữ liệu trao đổi chính:}
+\begin{itemize}
+\item Từ Module1 Service tới Motor Selection Service: \(P_{ct}\), \(n_{sb}\), và có thể gồm thêm tiêu chí lựa chọn nếu hệ thống định nghĩa trước.
+\item Từ Motor Repository tới Motor Selection Service: danh sách động cơ gồm công suất định mức, số vòng quay danh định, mã động cơ và các thông tin nhận dạng khác.
+\item Từ Motor Selection Service về Module1 Service: động cơ được chọn hoặc trạng thái ``không tìm thấy''.
+\end{itemize}
+
+\textbf{Điều kiện rẽ nhánh hoặc lỗi:}
+\begin{itemize}
+\item Nếu Motor Repository không truy xuất được dữ liệu hoặc danh sách động cơ rỗng, Motor Selection Service trả về lỗi dữ liệu.
+\item Trong vòng lặp đánh giá, các động cơ không đạt yêu cầu công suất bị loại ngay khỏi tập ứng viên.
+\item Nếu có nhiều động cơ thỏa điều kiện công suất, hệ thống dùng tiêu chí độ gần về số vòng quay để xác định phương án phù hợp nhất.
+\item Nếu sau khi duyệt toàn bộ danh sách vẫn không có ứng viên hợp lệ, hệ thống trả về trạng thái không tìm thấy động cơ phù hợp.
+\end{itemize}
+
+\textbf{Đặc tả để dựng Sequence Diagram:}
+\begin{enumerate}
+\item Tạo các lifeline theo thứ tự: Module1 Service, Motor Selection Service, Motor Repository.
+\item Module1 Service gửi thông điệp ``selectMotor(Pct, nsb)'' tới Motor Selection Service.
+\item Motor Selection Service gửi ``findAllMotors()'' tới Motor Repository.
+\item Motor Repository trả về ``motorList''.
+\item Dùng khối \texttt{alt}: nếu ``motorList'' rỗng hoặc lỗi truy xuất, Motor Selection Service trả ``motorDataError'' về Module1 Service.
+\item Nếu có dữ liệu, Motor Selection Service thực hiện ``initBestCandidate()''.
+\item Dùng khối \texttt{loop} cho từng động cơ trong ``motorList''.
+\item Trong mỗi vòng lặp, Motor Selection Service thực hiện kiểm tra ``ratedPower >= Pct?''.
+\item Dùng khối \texttt{alt}: nếu không đạt công suất thì bỏ qua động cơ hiện tại; nếu đạt thì tiếp tục ``evaluateSpeedDifference(nsb)''.
+\item Motor Selection Service thực hiện ``compareWithBestCandidate()'' và ``updateBestCandidateIfNeeded()''.
+\item Sau vòng lặp, dùng khối \texttt{alt}: nếu không có phương án, Motor Selection Service trả ``motorNotFound'' cho Module1 Service.
+\item Nếu có phương án, Motor Selection Service trả ``selectedMotor'' cho Module1 Service.
+\item Kết thúc sơ đồ tại thời điểm Module1 Service nhận được kết quả chọn động cơ.
+\end{enumerate}
+
+
+\subsection{Class Diagram }
+Biểu đồ lớp của Module 1 cần phản ánh đúng bản chất của một \textit{calculator engine}, trong đó dữ liệu đầu vào, dữ liệu tham chiếu, logic xử lý và dữ liệu đầu ra được tách biệt rõ ràng. Cách mô hình hóa này phù hợp với góc nhìn phân tích thiết kế hệ thống vì nó làm rõ trách nhiệm của từng lớp, hạn chế phụ thuộc chéo không cần thiết và tạo nền để mở rộng sang các module tính toán tiếp theo.
+
+Trong phạm vi hiện tại, mô hình lớp được tổ chức thành bốn nhóm chính: lớp dữ liệu đầu vào, lớp dữ liệu miền nghiệp vụ, lớp điều phối và xử lý tính toán, và lớp dữ liệu kết quả đầu ra. Cách tổ chức này phù hợp với Module 1 vì bài toán không xoay quanh quản lý trạng thái nghiệp vụ phức tạp, mà tập trung vào việc nhận dữ liệu, thực hiện pipeline tính toán và sinh ra kết quả chuẩn hóa.
+
+Cấu trúc chi tiết của các lớp chính được mô tả như sau:
+
+\begin{description}
+    \item[UserInput:]
+    Đây là lớp biểu diễn dữ liệu đầu vào do người dùng cung cấp cho Module 1. Lớp này đóng vai trò như một đối tượng chứa ngữ cảnh ban đầu của bài toán tính toán.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Gói dữ liệu yêu cầu thiết kế mà người dùng nhập vào hệ thống.
+        \item \textbf{Thuộc tính chính:} \texttt{requiredPower} (công suất yêu cầu trên trục thùng trộn), \texttt{requiredSpeed} (số vòng quay yêu cầu), và các tùy chọn cấu hình bổ sung nếu hệ thống cho phép người dùng can thiệp.
+        \item \textbf{Hành vi/phương thức chính:} Cung cấp khả năng truy xuất dữ liệu đầu vào theo ngữ nghĩa của bài toán, chẳng hạn như lấy công suất yêu cầu hoặc số vòng quay yêu cầu.
+        \item \textbf{Quan hệ:} \texttt{UserInput} được \texttt{ValidationService} kiểm tra tính hợp lệ và được \texttt{Module1Calculator} sử dụng như đầu vào trực tiếp của quá trình tính toán.
+    \end{itemize}
+
+    \item[SystemConstants:]
+    Lớp này biểu diễn tập hằng số và tham số cấu hình dùng chung cho Module 1.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Cung cấp các giá trị hiệu suất và ràng buộc cấu hình để các phép tính trong Module 1 được thực hiện nhất quán.
+        \item \textbf{Thuộc tính chính:} các hiệu suất thành phần của bộ truyền đai, bánh răng côn, bánh răng trụ; các giới hạn hoặc miền giá trị dùng trong phân phối tỷ số truyền.
+        \item \textbf{Hành vi/phương thức chính:} Trả về giá trị hiệu suất hoặc tham số cấu hình tương ứng theo từng nhóm tính toán.
+        \item \textbf{Quan hệ:} \texttt{SystemConstants} được \texttt{Module1Calculator} sử dụng dưới dạng dependency để tính hiệu suất tổng và kiểm tra điều kiện phân phối tỷ số truyền.
+    \end{itemize}
+
+    \item[Motor:]
+    Đây là lớp miền nghiệp vụ biểu diễn một động cơ trong cơ sở dữ liệu tham chiếu.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Đại diện cho một phương án động cơ có thể được chọn cho hệ thống dẫn động.
+        \item \textbf{Thuộc tính chính:} \texttt{motorCode}, \texttt{ratedPower}, \texttt{ratedSpeed}, cùng các thông tin nhận dạng hoặc mô tả kỹ thuật cần thiết.
+        \item \textbf{Hành vi/phương thức chính:} Cung cấp dữ liệu để đánh giá mức độ đáp ứng công suất và mức độ phù hợp về tốc độ quay.
+        \item \textbf{Quan hệ:} \texttt{Motor} được truy xuất thông qua \texttt{MotorRepository}, được \texttt{Module1Calculator} hoặc dịch vụ chọn động cơ sử dụng để đối sánh, và sau cùng được chứa trong \texttt{Module1Result}.
+    \end{itemize}
+
+    \item[TransmissionRatios:]
+    Lớp này biểu diễn kết quả phân phối tỷ số truyền của toàn hệ thống.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Gói thông tin về tỷ số truyền tổng và các tỷ số truyền thành phần theo từng cấp truyền.
+        \item \textbf{Thuộc tính chính:} \texttt{totalRatio}, \texttt{beltRatio}, \texttt{bevelGearRatio}, \texttt{spurGearRatio}.
+        \item \textbf{Hành vi/phương thức chính:} Cung cấp truy xuất dữ liệu tỷ số truyền theo từng cấp, đồng thời thể hiện sự gắn kết logic giữa tỷ số truyền tổng và các thành phần của nó.
+        \item \textbf{Quan hệ:} \texttt{TransmissionRatios} được tạo ra bởi \texttt{Module1Calculator} và được gói vào \texttt{Module1Result}.
+    \end{itemize}
+
+    \item[ShaftCharacteristic:]
+    Đây là lớp biểu diễn đặc tính động học của một trục trong hệ thống.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Lưu thông tin tính toán của từng trục để dùng cho các bước thiết kế sau.
+        \item \textbf{Thuộc tính chính:} \texttt{shaftName} hoặc \texttt{shaftIndex}, \texttt{power}, \texttt{speed}, \texttt{torque}.
+        \item \textbf{Hành vi/phương thức chính:} Cung cấp truy xuất dữ liệu đặc tính của trục và hỗ trợ biểu diễn kết quả theo từng cấp trục.
+        \item \textbf{Quan hệ:} nhiều đối tượng \texttt{ShaftCharacteristic} được tập hợp trong \texttt{Module1Result}; chúng được \texttt{Module1Calculator} sinh ra sau bước phân phối tỷ số truyền.
+    \end{itemize}
+
+    \item[Module1Result:]
+    Đây là lớp đầu ra quan trọng nhất của Module 1 và giữ vai trò như chuẩn dữ liệu dùng tiếp cho các module sau.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Đóng gói toàn bộ kết quả đầu ra của Module 1 dưới dạng cấu trúc thống nhất.
+        \item \textbf{Thuộc tính chính:} \texttt{selectedMotor}, \texttt{transmissionRatios}, \texttt{shaftCharacteristics}, cùng các dữ liệu trung gian cần được lưu vết như \texttt{totalEfficiency} hoặc \texttt{requiredMotorPower} nếu hệ thống cần hỗ trợ truy vết.
+        \item \textbf{Hành vi/phương thức chính:} Cung cấp dữ liệu kết quả cho giao diện hiển thị, chức năng lưu phiên tính toán và các module xử lý tiếp theo.
+        \item \textbf{Quan hệ:} \texttt{Module1Result} kết tập (\textit{aggregation}) một đối tượng \texttt{Motor}, một đối tượng \texttt{TransmissionRatios}, và một tập các đối tượng \texttt{ShaftCharacteristic}. Đây là lớp trung tâm ở phía đầu ra của module.
+    \end{itemize}
+
+    \item[Module1Calculator:]
+    Đây là lớp điều phối nghiệp vụ chính của Module 1.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Thực hiện toàn bộ pipeline tính toán của Module 1, từ kiểm tra dữ liệu, tính hiệu suất tổng, tính công suất động cơ yêu cầu, chọn động cơ, phân phối tỷ số truyền đến tính thông số các trục.
+        \item \textbf{Thuộc tính chính:} có thể bao gồm tham chiếu đến \texttt{ValidationService}, \texttt{MotorRepository} và \texttt{SystemConstants} dưới dạng phụ thuộc hoặc liên kết.
+        \item \textbf{Hành vi/phương thức chính:} \texttt{calculate()}, \texttt{calculateTotalEfficiency()}, \texttt{calculateRequiredMotorPower()}, \texttt{selectMotor()}, \texttt{distributeRatios()}, \texttt{calculateShaftCharacteristics()}, \texttt{buildResult()}.
+        \item \textbf{Quan hệ:} \texttt{Module1Calculator} phụ thuộc vào \texttt{ValidationService} để kiểm tra đầu vào, phụ thuộc vào \texttt{MotorRepository} để lấy dữ liệu động cơ, sử dụng \texttt{SystemConstants} trong các phép tính, và tạo ra \texttt{Module1Result}.
+    \end{itemize}
+
+    \item[MotorRepository:]
+    Lớp này đại diện cho thành phần truy xuất dữ liệu động cơ.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Tách biệt nguồn dữ liệu động cơ ra khỏi lớp tính toán, giúp lõi tính toán không phụ thuộc trực tiếp vào cách lưu trữ dữ liệu.
+        \item \textbf{Thuộc tính chính:} không nhất thiết nhấn mạnh thuộc tính nội tại ở mức phân tích; trọng tâm nằm ở vai trò truy xuất dữ liệu.
+        \item \textbf{Hành vi/phương thức chính:} \texttt{findAllMotors()}, \texttt{findCandidateMotors()} hoặc các hành vi tương đương để cung cấp danh sách động cơ cho bước đối sánh.
+        \item \textbf{Quan hệ:} \texttt{MotorRepository} cung cấp tập đối tượng \texttt{Motor} cho \texttt{Module1Calculator}; quan hệ chủ yếu là dependency.
+    \end{itemize}
+
+    \item[ValidationService:]
+    Đây là lớp phụ trách kiểm tra tính hợp lệ của dữ liệu trước khi khởi động pipeline tính toán.
+    \begin{itemize}
+        \item \textbf{Vai trò:} Tách riêng trách nhiệm kiểm tra dữ liệu khỏi lớp tính toán để tăng tính rõ ràng và khả năng bảo trì.
+        \item \textbf{Thuộc tính chính:} ở mức phân tích, lớp này không nhất thiết cần nhiều trạng thái; có thể phụ thuộc vào các quy tắc kiểm tra hoặc cấu hình ràng buộc.
+        \item \textbf{Hành vi/phương thức chính:} \texttt{validateInput()}, \texttt{validateConstants()}, \texttt{validateCalculationPreconditions()}.
+        \item \textbf{Quan hệ:} \texttt{ValidationService} nhận \texttt{UserInput} và có thể sử dụng \texttt{SystemConstants} để kiểm tra điều kiện tiền xử lý; lớp này được \texttt{Module1Calculator} gọi trước và trong quá trình tính toán.
+    \end{itemize}
+\end{description}
+
+Nhìn tổng thể, mô hình lớp trên phù hợp với một \textit{calculator engine} vì nó tách bạch ba khía cạnh quan trọng của hệ thống: dữ liệu vào, logic tính toán và dữ liệu ra. \texttt{UserInput} và \texttt{SystemConstants} đại diện cho ngữ cảnh đầu vào; \texttt{Module1Calculator}, \texttt{ValidationService} và \texttt{MotorRepository} đại diện cho cơ chế xử lý; còn \texttt{Module1Result} là lớp đầu ra chuẩn hóa. Cách tổ chức này giúp hệ thống dễ kiểm tra, dễ mở rộng và thuận lợi cho việc biểu diễn kiến trúc sau này.
+
+Đặc biệt, \texttt{Module1Result} giữ vai trò là \textit{output contract} của Module 1. Thay vì chỉ tạo ra các giá trị rời rạc, lớp này chuẩn hóa toàn bộ kết quả thành một cấu trúc thống nhất để các module phía sau có thể tiếp nhận trực tiếp. Vì vậy, trong biểu đồ lớp UML, \texttt{Module1Result} nên được đặt ở vị trí trung tâm của phía đầu ra, thể hiện rõ quan hệ kết tập với \texttt{Motor}, \texttt{TransmissionRatios} và \texttt{ShaftCharacteristic}.
+
+\textbf{Gợi ý quan hệ chính để dựng UML:}
+\begin{itemize}
+\item \texttt{Module1Calculator} phụ thuộc vào \texttt{ValidationService}.
+\item \texttt{Module1Calculator} phụ thuộc vào \texttt{MotorRepository}.
+\item \texttt{Module1Calculator} sử dụng \texttt{UserInput} và \texttt{SystemConstants}.
+\item \texttt{MotorRepository} quản lý hoặc cung cấp nhiều đối tượng \texttt{Motor}.
+\item \texttt{Module1Calculator} tạo ra một đối tượng \texttt{Module1Result}.
+\item \texttt{Module1Result} kết tập một \texttt{Motor}, một \texttt{TransmissionRatios}, và nhiều \texttt{ShaftCharacteristic}.
+\item \texttt{ValidationService} kiểm tra \texttt{UserInput} và các điều kiện liên quan đến \texttt{SystemConstants}.
+\end{itemize}
+
+\section{Architectural design}
+\subsection{ER diagram and Relational schema}
+Trong bối cảnh hiện tại, cơ sở dữ liệu của hệ thống không nhằm phục vụ nghiệp vụ giao dịch phức tạp, mà chủ yếu hỗ trợ tra cứu dữ liệu tham chiếu và lưu vết kết quả tính toán. Vì vậy, mô hình dữ liệu được thiết kế theo hướng gọn, đủ rõ và nhất quán với bản chất của một \textit{calculator engine} cho Module 1.
+
+\subsubsection{Entity Relationship Diagram (ERD)}
+
+Ở mức khái niệm, các thực thể cần thiết cho Module 1 gồm \texttt{Motor}, \texttt{SystemConstant}, \texttt{CalculationSession} và \texttt{Module1ResultSnapshot}. Mỗi thực thể giữ một vai trò riêng trong quá trình tính toán, đồng thời hỗ trợ việc tra cứu, kiểm tra và tái sử dụng kết quả.
+
+\begin{description}
+    \item[Motor:]
+    Đây là thực thể lưu trữ dữ liệu tham chiếu về động cơ dùng cho bước lựa chọn động cơ.
+    \begin{itemize}
+        \item \textbf{Thuộc tính chính:} \texttt{motor\_id}, \texttt{motor\_code}, \texttt{rated\_power}, \texttt{rated\_speed}, \texttt{description} hoặc các thông tin mô tả kỹ thuật cơ bản.
+        \item \textbf{Ý nghĩa:} Bảng này đóng vai trò như kho dữ liệu tra cứu, cho phép hệ thống lọc và đối sánh các phương án động cơ theo yêu cầu tính toán.
+    \end{itemize}
+
+    \item[SystemConstant:]
+    Đây là thực thể lưu các hằng số và tham số cấu hình dùng chung cho Module 1.
+    \begin{itemize}
+        \item \textbf{Thuộc tính chính:} \texttt{constant\_id}, \texttt{constant\_key}, \texttt{constant\_value}, \texttt{description}, \texttt{group\_name}.
+        \item \textbf{Ý nghĩa:} Thực thể này cho phép hệ thống quản lý tập giá trị hiệu suất và các tham số thiết kế theo cách có thể cập nhật, thay vì mã hóa cứng toàn bộ vào logic xử lý.
+    \end{itemize}
+
+    \item[CalculationSession:]
+    Đây là thực thể đại diện cho một lần người dùng thực hiện tính toán.
+    \begin{itemize}
+        \item \textbf{Thuộc tính chính:} \texttt{session\_id}, \texttt{input\_power}, \texttt{input\_speed}, \texttt{created\_at}, \texttt{notes} hoặc \texttt{project\_name} nếu hệ thống cho phép người dùng gắn nhãn cho phiên tính toán.
+        \item \textbf{Ý nghĩa:} Thực thể này giúp lưu dấu vết của dữ liệu đầu vào và ngữ cảnh cơ bản của một phiên làm việc, phục vụ cho việc xem lại hoặc so sánh các lần tính toán.
+    \end{itemize}
+
+    \item[Module1ResultSnapshot:]
+    Đây là thực thể lưu lại kết quả đầu ra của Module 1 ở dạng snapshot.
+    \begin{itemize}
+        \item \textbf{Thuộc tính chính:} \texttt{result\_id}, \texttt{session\_id}, \texttt{selected\_motor\_id}, \texttt{total\_efficiency}, \texttt{required\_motor\_power}, \texttt{total\_ratio}, \texttt{belt\_ratio}, \texttt{bevel\_gear\_ratio}, \texttt{spur\_gear\_ratio}, và trường dữ liệu cấu trúc hóa cho danh sách đặc tính trục nếu cần lưu đầy đủ.
+        \item \textbf{Ý nghĩa:} Thực thể này phản ánh lớp \texttt{Module1Result} ở mức lưu trữ, giúp hệ thống bảo tồn kết quả của một phiên tính toán như một bản chụp có thể truy xuất lại về sau.
+    \end{itemize}
+\end{description}
+
+Về quan hệ giữa các thực thể, mô hình dữ liệu được giữ đơn giản như sau:
+
+\begin{itemize}
+\item Một \texttt{CalculationSession} có thể gắn với đúng một \texttt{Module1ResultSnapshot} nếu phiên tính toán hoàn tất thành công; do đó quan hệ giữa hai thực thể này là 1--1 hoặc 1--0..1.
+\item Một \texttt{Module1ResultSnapshot} tham chiếu tới một \texttt{Motor} được chọn; do đó quan hệ từ \texttt{Motor} đến \texttt{Module1ResultSnapshot} là 1--N.
+\item \texttt{SystemConstant} là thực thể dữ liệu dùng chung, không nhất thiết phải ràng buộc khóa ngoại trực tiếp với từng phiên tính toán trong mô hình đơn giản hiện tại. Tuy nhiên, nó có quan hệ phụ thuộc nghiệp vụ với \texttt{CalculationSession} và \texttt{Module1ResultSnapshot}, vì các phiên tính toán sử dụng tập hằng số này để sinh kết quả.
+\end{itemize}
+
+Thiết kế như trên phù hợp với Module 1 vì nó chỉ lưu các thành phần thực sự cần thiết: dữ liệu tra cứu động cơ, dữ liệu cấu hình, dấu vết đầu vào và ảnh chụp kết quả đầu ra. Cách tiếp cận này tránh biến cơ sở dữ liệu thành một hệ quản trị nghiệp vụ phức tạp, đồng thời vẫn bảo đảm khả năng truy vết và tái sử dụng kết quả.
+
+\subsubsection{Relational Schema}
+
+Ở mức lược đồ quan hệ, mô hình dữ liệu có thể được biểu diễn logic như sau:
+
+\begin{itemize}
+\item \textbf{MOTOR}(\underline{\texttt{motor\_id}}, \texttt{motor\_code}, \texttt{rated\_power}, \texttt{rated\_speed}, \texttt{description})
+\item \textbf{SYSTEM\_CONSTANT}(\underline{\texttt{constant\_id}}, \texttt{constant\_key}, \texttt{constant\_value}, \texttt{group\_name}, \texttt{description})
+\item \textbf{CALCULATION\_SESSION}(\underline{\texttt{session\_id}}, \texttt{input\_power}, \texttt{input\_speed}, \texttt{project\_name}, \texttt{notes}, \texttt{created\_at})
+\item \textbf{MODULE1\_RESULT\_SNAPSHOT}(\underline{\texttt{result\_id}}, \texttt{session\_id}, \texttt{selected\_motor\_id}, \texttt{total\_efficiency}, \texttt{required\_motor\_power}, \texttt{total\_ratio}, \texttt{belt\_ratio}, \texttt{bevel\_gear\_ratio}, \texttt{spur\_gear\_ratio}, \texttt{shaft\_data})
+\end{itemize}
+
+Trong đó:
+
+\begin{itemize}
+\item \texttt{motor\_id} là khóa chính của bảng \texttt{MOTOR}.
+\item \texttt{constant\_id} là khóa chính của bảng \texttt{SYSTEM\_CONSTANT}.
+\item \texttt{session\_id} là khóa chính của bảng \texttt{CALCULATION\_SESSION}.
+\item \texttt{result\_id} là khóa chính của bảng \texttt{MODULE1\_RESULT\_SNAPSHOT}.
+\item \texttt{session\_id} trong bảng \texttt{MODULE1\_RESULT\_SNAPSHOT} là khóa ngoại tham chiếu tới \texttt{CALCULATION\_SESSION(session\_id)}.
+\item \texttt{selected\_motor\_id} trong bảng \texttt{MODULE1\_RESULT\_SNAPSHOT} là khóa ngoại tham chiếu tới \texttt{MOTOR(motor\_id)}.
+\end{itemize}
+
+Ý nghĩa của từng bảng được giải thích như sau:
+
+\begin{itemize}
+\item \textbf{Bảng \texttt{MOTOR}:} dùng để lưu kho dữ liệu động cơ làm nguồn tra cứu chính cho bước chọn động cơ. Đây là bảng dữ liệu tham chiếu cốt lõi của Module 1.
+
+\item \textbf{Bảng \texttt{SYSTEM\_CONSTANT}:} dùng để lưu các hằng số hiệu suất và tham số thiết kế theo dạng cấu hình. Bảng này giúp việc điều chỉnh hoặc mở rộng tập hằng số trở nên linh hoạt hơn so với cách gắn cứng vào mã nguồn.
+
+\item \textbf{Bảng \texttt{CALCULATION\_SESSION}:} dùng để lưu đầu vào và ngữ cảnh cơ bản của một lần tính toán. Bảng này cần thiết nếu hệ thống muốn hỗ trợ xem lại, so sánh, hoặc quản lý các phiên tính toán theo từng bài toán.
+
+\item \textbf{Bảng \texttt{MODULE1\_RESULT\_SNAPSHOT}:} dùng để lưu ảnh chụp kết quả của Module 1. Bảng này đặc biệt quan trọng vì nó cho phép biến \texttt{Module1Result} từ mô hình lớp thành một thực thể có thể lưu trữ, truy xuất và dùng lại như một nguồn dữ liệu đầu ra chuẩn hóa; trường \texttt{shaft\_data} có thể được lưu ở dạng cấu trúc gọn như JSON hoặc text tuần tự hóa nếu chưa cần tách thành bảng riêng.
+\end{itemize}
+
+Trong trường hợp cần giữ mô hình dữ liệu ở mức tối giản hơn nữa, có thể gộp \texttt{CalculationSession} và \texttt{Module1ResultSnapshot} thành một bảng duy nhất. Tuy nhiên, việc tách hai bảng như trên hợp lý hơn về mặt thiết kế vì nó phân biệt rõ dữ liệu đầu vào của một phiên tính toán và kết quả đầu ra của phiên đó. Sự tách biệt này cũng nhất quán với các phần use case và class diagram đã mô tả trước đó.
+
+\newpage
+\subsection{Architectural Approach}
+
+Trong phạm vi hiện tại, kiến trúc của hệ thống được định hướng theo mô hình đơn giản và dễ mở rộng, phù hợp với bản chất của một ứng dụng mobile có lõi là \textit{calculator engine} cho Module 1. Trọng tâm của kiến trúc không nằm ở việc triển khai một hệ thống phân tán phức tạp, mà ở việc phân tách rõ giao diện người dùng, lớp xử lý tính toán và lớp truy xuất dữ liệu tham chiếu. Cách tiếp cận này giúp hệ thống đủ gọn cho giai đoạn đồ án hiện tại, đồng thời tạo nền để tích hợp các module tính toán tiếp theo.
+
+\subsubsection{Frontend (FE)}
+
+Ở phía người dùng, hệ thống được định hướng như một ứng dụng mobile tập trung vào ba nhiệm vụ chính: nhập dữ liệu bài toán, kiểm tra lỗi nhập liệu và hiển thị kết quả tính toán một cách có cấu trúc. Với đặc thù của Module 1, giao diện nên được tổ chức theo luồng \textit{step-by-step} hoặc \textit{wizard}, trong đó người dùng lần lượt đi qua các bước nhập công suất yêu cầu, số vòng quay yêu cầu, xác nhận dữ liệu và xem kết quả. Cách tổ chức này giúp giảm sai sót thao tác và phù hợp với bài toán chọn động cơ, phân phối tỷ số truyền có trình tự xử lý rõ ràng.
+
+Về mặt kiến trúc, Frontend nên được phân tách thành hai lớp trách nhiệm chính. Lớp thứ nhất là \textit{presentation layer}, phụ trách hiển thị biểu mẫu, thông báo lỗi, trạng thái xử lý và kết quả đầu ra. Lớp thứ hai là \textit{interaction layer}, phụ trách tiếp nhận dữ liệu từ người dùng, chuyển đổi thành cấu trúc đầu vào phù hợp và gửi yêu cầu tới lõi tính toán. Việc tách biệt này giúp giao diện không phụ thuộc trực tiếp vào công thức hoặc quy tắc chọn động cơ, từ đó dễ thay đổi cách trình bày mà không ảnh hưởng đến logic tính toán.
+
+Trong bối cảnh Module 1, Frontend không cần gánh quá nhiều nghiệp vụ. Vai trò của nó chủ yếu là dẫn dắt người dùng qua quy trình nhập liệu, phản hồi nhanh các lỗi cơ bản và trình bày \texttt{Module1Result} dưới dạng dễ hiểu. Điều này bảo đảm ứng dụng mobile giữ được tính trực quan và phù hợp với người dùng trong môi trường học tập hoặc đồ án kỹ thuật.
+
+\subsubsection{Backend (BE)}
+
+Trong dự án hiện tại, Backend không nên được hiểu như một hệ thống web lớn với nhiều dịch vụ nghiệp vụ độc lập, mà phù hợp hơn khi được mô tả như một \textit{calculation engine} kết hợp với lớp truy xuất dữ liệu tham chiếu. Ở giai đoạn phân tích thiết kế, Backend có thể tồn tại dưới dạng một module logic nội bộ hoặc một local service phục vụ tính toán cho ứng dụng mobile. Điều quan trọng nhất là phân tách trách nhiệm rõ ràng giữa các phần xử lý, thay vì lựa chọn một kiến trúc triển khai phức tạp.
+
+Kiến trúc xử lý phía sau có thể được mô tả theo ba lớp trách nhiệm chính:
+
+\begin{itemize}
+\item \textbf{Input validation layer:} phụ trách kiểm tra tính hợp lệ của dữ liệu đầu vào, phát hiện thiếu dữ liệu, sai kiểu, sai đơn vị hoặc các trường hợp không đủ điều kiện để tính toán.
+\item \textbf{Calculation engine layer:} là lõi của Module 1, thực hiện các bước tính hiệu suất tổng, tính công suất yêu cầu của động cơ, chọn động cơ, phân phối tỷ số truyền và tính các thông số động học cho các trục.
+\item \textbf{Data access layer:} phụ trách truy xuất dữ liệu động cơ, hằng số hệ thống và lưu vết phiên tính toán hoặc ảnh chụp kết quả khi cần.
+\end{itemize}
+
+Mô hình này thể hiện rõ nguyên tắc \textit{separation of concerns}. Dữ liệu đầu vào không đi thẳng vào công thức tính toán mà phải qua lớp kiểm tra. Lõi tính toán không phụ thuộc trực tiếp vào cách lưu trữ dữ liệu động cơ, mà tương tác thông qua thành phần truy xuất dữ liệu. Kết quả cuối cùng cũng không chỉ là các con số rời rạc, mà được đóng gói thành \texttt{Module1Result} để có thể sử dụng lại ở các module sau.
+
+Với cách tiếp cận như vậy, Backend của dự án vẫn giữ được sự đơn giản cần thiết cho giai đoạn hiện tại, nhưng không bị ràng buộc vào một cấu trúc quá chặt khiến việc mở rộng sau này trở nên khó khăn. Khi cần phát triển các module tiếp theo, cùng một lõi xử lý này có thể tiếp tục được mở rộng mà không phải thay đổi nguyên tắc tổ chức kiến trúc.
+
+\subsubsection{DevOps \& Deployment Infrastructure}
+
+Ở giai đoạn hiện tại, phần hạ tầng triển khai chỉ cần được xác định ở mức định hướng, nhằm hỗ trợ quản lý mã nguồn, xây dựng ứng dụng và kiểm tra tính ổn định của module. Vì hệ thống mới tập trung vào Module 1, chưa đi vào triển khai đầy đủ toàn bộ ứng dụng sản xuất, nên việc mô tả DevOps và Deployment Infrastructure cần được giữ ở mức vừa phải.
+
+Trước hết, mã nguồn nên được quản lý theo hệ thống kiểm soát phiên bản để bảo đảm khả năng theo dõi thay đổi trong công thức, cấu hình và dữ liệu tham chiếu. Bên cạnh đó, quy trình build nên cho phép đóng gói ứng dụng mobile và module tính toán một cách nhất quán, giúp nhóm dễ dàng kiểm tra lại các phiên bản khác nhau của hệ thống.
+
+Về kiểm thử, định hướng phù hợp là tổ chức các bước kiểm tra cơ bản cho lớp validation, lớp calculation engine và lớp truy xuất dữ liệu. Mục tiêu ở đây không phải xây dựng một pipeline kiểm thử phức tạp, mà là tạo ra cơ chế đủ để xác minh rằng các thay đổi trong công thức hoặc hằng số cấu hình không làm sai lệch kết quả của Module 1.
+
+Đối với triển khai, có thể xem xét hai hướng phù hợp với giai đoạn hiện tại:
+
+\begin{itemize}
+\item tích hợp trực tiếp lõi tính toán vào ứng dụng mobile như một thành phần nội bộ nếu mục tiêu là đơn giản hóa kiến trúc;
+\item hoặc tách lõi tính toán thành một service nhẹ nếu cần chuẩn bị cho việc tái sử dụng ở các module tiếp theo hoặc trên nhiều nền tảng.
+\end{itemize}
+
+Nhìn chung, định hướng DevOps và triển khai của dự án ở giai đoạn này nên ưu tiên tính đơn giản, khả năng tái lập môi trường và khả năng quản lý phiên bản, thay vì tối ưu cho hạ tầng vận hành quy mô lớn. Cách tiếp cận này phù hợp với phạm vi học thuật của đồ án và không làm kiến trúc bị \textit{over-engineer} so với nhu cầu thực tế của Module 1.
+
+\end{document}
